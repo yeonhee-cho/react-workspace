@@ -4,10 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R01_ClassComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/index.css" afterDir="false" />
+    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="react - class, function, props">
+      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/PracticeApp.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R02_FunctionComponent.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R03_Props1.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R04_Props2.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R05_Props3.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R06_Props4.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R07_ValueType.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R08_State1.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R09_State2.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R10_State3.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R10_State3_Components/ChildIdState.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R10_State3_Components/ChildPwState.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/R10_State3_Components/ParentState.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/Greeting.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/MyProfile.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/Product.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/Weather.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day2/LikeButton.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day2/TemperatureConverter.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/practices/day2/TodoInput.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/R01_ClassComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/R01_ClassComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,16 +41,33 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JSX File" />
+        <option value="JavaScript File" />
+        <option value="React Functional Component" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;yeonhee-cho&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/yeonhee-cho/react-workspace.git&quot;,
+    &quot;accountId&quot;: &quot;d2f3d608-adaf-46d9-919b-31114bb11cf8&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="34oPwJGooVM3P7iyVObuSwqGeaq" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,6 +77,8 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
     "node.js.detected.package.eslint": "true",
@@ -46,10 +88,17 @@
     "nodejs_interpreter_path": "node",
     "nodejs_package_manager_path": "npm",
     "npm.npm start.executor": "Run",
-    "settings.editor.selected.configurable": "File.Encoding",
+    "settings.editor.selected.configurable": "fileTemplates",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="E:\풀스택 조연희\react-workspace\goodcommunity\src\components\practices\day1" />
+      <recent name="E:\풀스택 조연희\react-workspace\goodcommunity\src\components" />
+      <recent name="E:\풀스택 조연희\react-workspace\goodcommunity\src" />
+    </key>
+  </component>
   <component name="RunManager" selected="npm.npm start">
     <configuration name="Debug Application" type="JavascriptDebugType" uri="http://localhost:3000">
       <method v="2" />
@@ -80,11 +129,27 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1761877189271</updated>
-      <workItem from="1761877190130" duration="3338000" />
+      <workItem from="1761877190130" duration="12088000" />
+      <workItem from="1762216526348" duration="1360000" />
     </task>
+    <task id="LOCAL-00001" summary="react - start">
+      <option name="closed" value="true" />
+      <created>1761880763330</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1761880763330</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
+    <MESSAGE value="react - start" />
+    <option name="LAST_COMMIT_MESSAGE" value="react - start" />
   </component>
 </project>

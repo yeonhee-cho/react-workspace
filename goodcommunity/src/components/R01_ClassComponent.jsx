@@ -32,12 +32,18 @@ import React, {Component} from "react";
     // 3. 만든 class 를 export default 작성하기
 class ComponentEx extends Component {
     /* js를 작성하는 공간이기 때문에 script 주석 사용 */
+
+    constructor(pros) {
+        super(pros);
+    }
     
     // render() 함수 : 
     // return 되는 html 형식의 코드(jsx, js + xml)를 화면에 출력하는 함수
     // 화면이 변경되어야 할 시점에 자동으로 호출됨
     // Component 를 상속 받은 하위 클래스에 반드시 있어야하는 함수
     render() {
+        /* js를 작성하는 공간이기 때문에 script 주석 사용 */
+        const value = 10;
         return(
             <>
                 {/* js 또는 jsx로 React 화 된 html 내부 주석 사용*/}
@@ -50,4 +56,4 @@ class ComponentEx extends Component {
 
 export default ComponentEx;
 // ComponentEx 라는 컴포넌트를 내보내겠다는 의미
-// TODO
+// 다른 js 나 jsx 파일에서 해당 컴포넌트를 import 해서 사용 가능
