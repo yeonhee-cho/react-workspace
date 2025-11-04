@@ -4,32 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="react - class, function, props">
-      <change afterPath="$PROJECT_DIR$/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/PracticeApp.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R02_FunctionComponent.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R03_Props1.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R04_Props2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R05_Props3.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R06_Props4.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R07_ValueType.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R08_State1.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R09_State2.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R10_State3.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R10_State3_Components/ChildIdState.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R10_State3_Components/ChildPwState.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R10_State3_Components/ParentState.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/Greeting.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/MyProfile.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/Product.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day1/Weather.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day2/LikeButton.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day2/TemperatureConverter.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/practices/day2/TodoInput.jsx" afterDir="false" />
+    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="react - state, props">
+      <change afterPath="$PROJECT_DIR$/src/Main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/R01_ClassComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/R01_ClassComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -41,8 +20,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JSX File" />
-        <option value="JavaScript File" />
         <option value="React Functional Component" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -130,7 +109,7 @@
       <option name="presentableId" value="Default" />
       <updated>1761877189271</updated>
       <workItem from="1761877190130" duration="12088000" />
-      <workItem from="1762216526348" duration="1360000" />
+      <workItem from="1762216526348" duration="2685000" />
     </task>
     <task id="LOCAL-00001" summary="react - start">
       <option name="closed" value="true" />
@@ -140,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761880763330</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="react - state, props">
+      <option name="closed" value="true" />
+      <created>1762217934371</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1762217934371</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -150,6 +137,7 @@
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="react - start" />
-    <option name="LAST_COMMIT_MESSAGE" value="react - start" />
+    <MESSAGE value="react - state, props" />
+    <option name="LAST_COMMIT_MESSAGE" value="react - state, props" />
   </component>
 </project>
