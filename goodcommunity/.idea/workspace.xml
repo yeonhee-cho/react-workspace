@@ -4,11 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="react - state, props">
-      <change afterPath="$PROJECT_DIR$/src/Main.js" afterDir="false" />
+    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="react - router - dom">
+      <change afterPath="$PROJECT_DIR$/src/components/pages/About.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/pages/Contact.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/pages/Home.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/pages/NotFound.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/pages/UserProfile.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/components/pages/styles.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/PracticeApp.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/PracticeApp.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/practices/day2/TodoInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/practices/day2/TodoInput.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -109,7 +115,7 @@
       <option name="presentableId" value="Default" />
       <updated>1761877189271</updated>
       <workItem from="1761877190130" duration="12088000" />
-      <workItem from="1762216526348" duration="2685000" />
+      <workItem from="1762216526348" duration="7829000" />
     </task>
     <task id="LOCAL-00001" summary="react - start">
       <option name="closed" value="true" />
@@ -127,7 +133,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762217934371</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="react - router - dom">
+      <option name="closed" value="true" />
+      <created>1762219337654</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1762219337654</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -138,6 +152,7 @@
     <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="react - start" />
     <MESSAGE value="react - state, props" />
-    <option name="LAST_COMMIT_MESSAGE" value="react - state, props" />
+    <MESSAGE value="react - router - dom" />
+    <option name="LAST_COMMIT_MESSAGE" value="react - router - dom" />
   </component>
 </project>
