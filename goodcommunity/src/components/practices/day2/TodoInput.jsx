@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 
 const TodoInput = () => {
-    // 여기에 코드 작성
     // 1. useState로 할일 내용 상태 만들기 (초기값: '')
-    // 2. input onChange 이벤트 핸들러 만들기
-    // 3. 추가 버튼 클릭 핸들러 만들기
     const [todo, setTodo] = useState('');
+
+    // 2. input onChange 이벤트 핸들러 만들기
+    const handleInputChange = (e) => {
+        setTodo(e.target.value);
+    }
+    // 3. 추가 버튼 클릭 핸들러 만들기
+    const handleAddTodo = (e) => {
+        if(todo.trim()) {
+            alert(`할 일이 추가되었습니다. ${todo}`);
+            setTodo(''); // 입력 필드 초기화
+        }
+    }
 
     return (
         <div>
@@ -14,6 +23,7 @@ const TodoInput = () => {
             <input
                 type="text"
                 value={todo}
+                onChange={handleInputChange}
                 placeholder="할 일을 입력하세요." />
             {/* 글자 수 표시 */}
             <div>글자 수 : {todo.length}/50</div>
@@ -23,7 +33,7 @@ const TodoInput = () => {
 
             )}
             {/* 추가 버튼 (비어있으면 비활성화) */}
-            <button  disabled={todo.trim() === ''} >추가</button>
+            <button onClick={handleAddTodo} disabled={todo.trim() === ''} >추가</button>
             {/* 입력한 내용 미리보기 */}
             {todo && (
                 <div>입력한 내용 : {todo}</div>
