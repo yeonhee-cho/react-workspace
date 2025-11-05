@@ -7,9 +7,6 @@
     <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="react - router - dom">
       <change afterPath="$PROJECT_DIR$/src/components/R11_Context1.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/practices/day2/LikeButton.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/practices/day2/LikeButton.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/practices/day2/TemperatureConverter.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/practices/day2/TemperatureConverter.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/practices/day2/TodoInput.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/practices/day2/TodoInput.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,7 +107,7 @@
       <updated>1761877189271</updated>
       <workItem from="1761877190130" duration="12088000" />
       <workItem from="1762216526348" duration="14462000" />
-      <workItem from="1762302758849" duration="636000" />
+      <workItem from="1762302758849" duration="1127000" />
     </task>
     <task id="LOCAL-00001" summary="react - start">
       <option name="closed" value="true" />
@@ -144,7 +141,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762227095231</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="react - router - dom">
+      <option name="closed" value="true" />
+      <created>1762303518020</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1762303518020</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
