@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="Context">
-      <change afterPath="$PROJECT_DIR$/src/Main_Theme.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/Content.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/Footer.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/Header.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/themeStyles.js" afterDir="false" />
+    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="Context 를 이용하여 테마 변경하기 style js 넣기">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main_Theme.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main_Theme.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/R11_Context_Theme/Content.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/Content.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/R11_Context_Theme/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/R11_Context_Theme/themeStyles.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/R11_Context_Theme/themeStyles.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +110,7 @@
       <updated>1761877189271</updated>
       <workItem from="1761877190130" duration="12088000" />
       <workItem from="1762216526348" duration="14462000" />
-      <workItem from="1762302758849" duration="4763000" />
+      <workItem from="1762302758849" duration="6096000" />
     </task>
     <task id="LOCAL-00001" summary="react - start">
       <option name="closed" value="true" />
@@ -162,7 +160,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762304021516</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Context 를 이용하여 테마 변경하기 style js 넣기">
+      <option name="closed" value="true" />
+      <created>1762307737622</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1762307737622</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,6 +181,7 @@
     <MESSAGE value="react - state, props" />
     <MESSAGE value="react - router - dom" />
     <MESSAGE value="Context" />
-    <option name="LAST_COMMIT_MESSAGE" value="Context" />
+    <MESSAGE value="Context 를 이용하여 테마 변경하기 style js 넣기" />
+    <option name="LAST_COMMIT_MESSAGE" value="Context 를 이용하여 테마 변경하기 style js 넣기" />
   </component>
 </project>

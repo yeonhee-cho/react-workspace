@@ -6,7 +6,7 @@ const Header = () => {
     const {isDark, toggleTheme} = useContext(ThemeContext);
     const theme = isDark ? darkTheme : lightTheme;
     return (
-        <header style={theme.header.container}>
+        <header style={commonStyles.header.container}>
             <h1 style={theme.header.title}>웹사이트</h1>
             <button
                 onClick={toggleTheme}

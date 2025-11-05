@@ -1,21 +1,26 @@
 export const lightTheme = {
+    main : {
+        backgroundColor: '#fff',
+        color: '#222',
+    },
+
     header : {
         title: {
-
+            color: '#222'
         },
 
         button: {
             backgroundColor : '#ddd',
-            color: '#000'
+            color: '#222'
         }
     },
 
     content : {
-        main: {
+        container: {
         },
 
-        body: {
-
+        text: {
+            color: '#222'
         }
     },
 
@@ -25,15 +30,20 @@ export const lightTheme = {
         },
 
         copyText: {
-
+            color: '#222'
         }
     },
 };
 
 export const darkTheme = {
+    main : {
+        backgroundColor: '#222',
+        color: '#fff',
+    },
+
     header : {
         title: {
-
+            color: '#fff'
         },
 
         button: {
@@ -43,12 +53,11 @@ export const darkTheme = {
     },
 
     content : {
-        main: {
-
+        container: {
         },
 
-        body: {
-
+        text: {
+            color: '#fff'
         }
     },
 
@@ -58,12 +67,17 @@ export const darkTheme = {
         },
 
         copyText: {
-
+            color: '#fff'
         }
     },
 };
 
 export const commonStyles = {
+    main: {
+        minHeight: '100vh',
+        padding : '20px'
+    },
+
     header: {
         container: {
             marginBottom : '30px'
@@ -78,12 +92,11 @@ export const commonStyles = {
     },
 
     content : {
-        main: {
+        container: {
             marginBottom: '30px'
         },
 
-        body: {
-
+        text: {
         }
     },
 
