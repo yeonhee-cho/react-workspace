@@ -59,7 +59,7 @@ const TemperatureConverter = () => {
             return ''
         } else if(temp < 0) {
             return <p>🥶 추워요</p>
-        } else if(temp == 0 || temp <= 25) {
+        } else if(temp <= 25) {
             return <p>😊 적당해요</p>
         } else {
             return <p>🥵 더워요</p>
