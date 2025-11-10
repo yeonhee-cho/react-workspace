@@ -48,19 +48,19 @@ const AuthProvider = ({children}) => {
                     message : '로그인 중 오류가 발생했습니다.'
                 };
             });
-        // Context에 제공할 값 들
-        const value = {
-            user, // 현재 로그인 한 사용자 정보
-            loginFn, // 로그인 함수
-            isAuthenticated:!user // 로그인 여부(true/false) 제공될 것
-        };
-
-        return (
-            <AuthContext.Provider value={value}>
-                {children}
-            </AuthContext.Provider>
-        )
     };
 
+    // Context에 제공할 값 들
+    const value = {
+        user, // 현재 로그인 한 사용자 정보
+        loginFn, // 로그인 함수
+        isAuthenticated:!user // 로그인 여부(true/false) 제공될 것
+    };
+
+    return (
+        <AuthContext.Provider value={value}>
+            {children}
+        </AuthContext.Provider>
+    )
 }
-export default AuthProvider
+export default AuthProvider;
