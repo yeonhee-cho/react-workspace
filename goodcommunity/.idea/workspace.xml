@@ -5,43 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="useEffect">
-      <change afterPath="$PROJECT_DIR$/../.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/react-workspace.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.idea/git_toolbox_prj.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/myhomepage.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/public/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/public/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/public/logo192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/public/logo512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/public/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/public/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/App.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/App.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/context/AuthContext.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/index.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/logo.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/Board.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/BoardDetail.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/Login.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/Main.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/MyPage.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/Signup.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../myhomepage/src/pages/Write.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/data_source_mapping.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -158,6 +121,7 @@
       <workItem from="1762475527323" duration="29000" />
       <workItem from="1762476880996" duration="2103000" />
       <workItem from="1762501322953" duration="74000" />
+      <workItem from="1762821221829" duration="757000" />
     </task>
     <task id="LOCAL-00001" summary="react - start">
       <option name="closed" value="true" />

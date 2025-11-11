@@ -118,6 +118,9 @@ const Login = () => {
             setMessage("로그인 중 오류가 발생했습니다.");
         });
          */
+        // console.log로 로그인 결과 유무를 확인하고자 할 경우
+        // const result = loginFn(memberEmail, memberPassword);
+        // console.log("로그인 결과 : ", result);
         loginFn(memberEmail, memberPassword)
             .then(result => {
                 if(result.succes) {
