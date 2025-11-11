@@ -35,7 +35,7 @@ const AuthProvider = ({children}) => {
 
     const checkLoginStatus = () => {
         // 로그인 상태 확인 함수 기능 만들기
-        axios.get(API_AUTH_URL + "/check", {
+        return axios.get(API_AUTH_URL + "/check", {
             withCredentials:true
         }).then(res=> {
                 console.log("res.data      : " + res.data);
