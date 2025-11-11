@@ -38,13 +38,33 @@ const AuthProvider = ({children}) => {
         axios.get(API_AUTH_URL + "/check", {
             withCredentials:true
         }).then(res=> {
-            console.log("로그인 상태 확인 응답 : ", res.data);
-            setUser(res.data.user);
-        }).catch(err => {
-            console.log("로그인 상태 확인 오류 : ", err);
-            return setUser(null)
-        }).finally(() => setLoading(false))
-    }
+                console.log("res.data      : " + res.data);
+                console.log("res.data.user : " + res.data.user);
+                // 2. 요청성공(200 ~ 299)
+                // 서버가 응답을 성공적으로 보냈을 때 실행
+                //setUser(res.data); //로그인 성공 시 사용자에 대한 모든 정보 저장
+
+            if(res.data.success && res.data.user) {
+                setUser(res.data.user);
+                return {
+                    success: true,
+                    message: res.data.message
+                };
+            } else {
+                return {
+                    success: false,
+                    message: res.data.message || '로그인 실패'
+                }
+            }
+            })
+            .catch( err => {
+                    console.error("로그인 에러 : ", err);
+                    return {
+                        success : false,
+                        message : '로그인 중 오류가 발생했습니다.'
+                    };
+            }).finally(() => setLoading(false))
+    };
 
     const loginFn = (memberEmail, memberPassword) => {
         return axios.post("http://localhost:8085/api/auth/login",

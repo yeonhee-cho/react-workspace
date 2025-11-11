@@ -130,7 +130,7 @@ const Login = () => {
                     // 로그인 실패에 대한 메세지 전달
                     setMessage(result.message)
                 }
-            })
+            }).catch(err => setMessage("로그인 중 오류가 발생했습니다."));
 
     };
     return (
