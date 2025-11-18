@@ -12,11 +12,12 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import axios from "axios";
 
+
 // 0. 공통 URL 상수 이름 형태로 데이터를 작성 후 변수 이름으로 상태 관리
 const API_AUTH_URL = "http://localhost:8085/api/auth";
 
 // 1. context 생성
-const AuthContext = createContext();
+const AuthContext  = createContext();
 
 // 2. customHook : 다른 컴포넌트에서 쉽게 사용하기 위한 인증 훅 생성
 export const useAuth = () => {
@@ -35,61 +36,66 @@ const AuthProvider = ({children}) => {
 
     const checkLoginStatus = () => {
         // 로그인 상태 확인 함수 기능 만들기
-        axios.get(API_AUTH_URL + "/check", {
-            withCredentials:true
-        }).then(res=> {
-                console.log("로그인 상태 확인 응답 : " + res.data);
+        axios.get(API_AUTH_URL+"/check", {
+            withCredentials:true })
+            .then(res => {
+                console.log("로그인 상태 확인 응답 : ", res.data);
+
                 setUser(res.data.user);
             })
-            .catch( err => {
-                    console.error("로그인 상태 확인 오류 : ", err);
-                    setUser((null))
-            }).finally(() => setLoading(false))
-    };
+            .catch(err => {
+                console.log("로그인 상태 확인 오류 : ",err);
+                setUser(null);
+            })
+            .finally(() => setLoading(false))
+    }
 
     const loginFn = (memberEmail, memberPassword) => {
-        return axios.post("http://localhost:8085/api/auth/login",
-            {memberEmail, memberPassword},
-            {withCredentials:true}) // session 유지를 위한 쿠키 전송
-            .then(res => {
-                console.log("res.data : " + res.data);
-                console.log("res.data.user : " + res.data.user);
+        return  axios.post(API_AUTH_URL+'/login',
+            {memberEmail,memberPassword},
+            {withCredentials:true})
+            .then(
+                res => {
+                    console.log("res.data      : " + res.data);
+                    console.log("res.data.user : " + res.data.user);
                 // 2. 요청 성공(200 ~ 299)
                 // 서버가 응답을 성공적으로 보냈을 때 실행
                 // setUser(res.data); // 로그인 성공 시 사용자 정보 저장
-                if(res.data.success && res.data.user) {
-                    setUser(res.data.user);
-                    return{
-                        success : true,
-                        message : res.data.message
-                    };
-                } else {
-                    return {
-                        success: false,
-                        message: res.data.message || '로그인 실패'
+                    if(res.data.success && res.data.user) {
+                        setUser(res.data.user);
+                        return{
+                            success : true,
+                            message : res.data.message
+                        };
+                    } else {
+                        return {
+                            success: false,
+                            message: res.data.message || '로그인 실패'
+                        }
                     }
-                }
-            }).catch(err => {
+
+                })
+            .catch( err => {
                 console.error("로그인 에러 : ", err);
                 return {
-                    succes : false,
+                    success : false,
                     message : '로그인 중 오류가 발생했습니다.'
                 };
             });
     };
 
     const logoutFn = () => {
-       return axios.post(API_AUTH_URL + "/logout",
-            {},{withCredentials:true} // 쿠키지우기
-        ).then(res => {
-            console.log("로그아웃 응답 : ", res.data);
-            setUser(null); // 사용자 정보 초기화
-            return {success : true}
-        })
+        return axios.post(API_AUTH_URL+'/logout',
+            {},{withCredentials:true}            )
+            .then(res => {
+                console.log("로그아웃 응답 : ", res.data);
+                setUser(null); // 사용자 정보 초기화
+                return { success : true };
+            })
             .catch(err => {
                 console.error("로그아웃 에러 : ", err);
-                return {success : false}
-            })
+                return {success: false};
+            });
     }
     // Context에 제공할 값 들
     const value = {
