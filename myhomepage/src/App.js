@@ -61,6 +61,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Main/>} />
                 <Route path="/board" element={<Board/>} />
+                {/* /board/:id id  */}
                 <Route path="/board/:id" element={<BoardDetail/>} />
                 <Route path="/signup" element={<Signup/>} />
                 <Route path="/login" element={<Login/>} />
