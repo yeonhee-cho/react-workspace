@@ -8,7 +8,8 @@ import MyPage from "./pages/MyPage";
 import Write from "./pages/Write";
 import './App.css';
 import BoardDetail from "./pages/BoardDetail";
-import {useAuth} from "./context/AuthContext"; // 단순히 가져와서 적용할 때는 from 생략
+import {useAuth} from "./context/AuthContext";
+import NotificationToast from "./components/NotificationToast"; // 단순히 가져와서 적용할 때는 from 생략
 
 // 1. 라우팅에 필요한 컴포넌트 임포트
 //    공통 스타일 임포트
@@ -36,6 +37,8 @@ function App() {
 
     return (
         <div className="App">
+            {/* 모든 곳에서 실시간 알림  토스트 */}
+            <NotificationToast/>
             {/* --- 5. 공통 내비게이션 바 --- */}
             <nav className="navbar">
                 <Link to="/" className="logo">myhomepage</Link>
