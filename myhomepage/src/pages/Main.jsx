@@ -102,14 +102,38 @@ const Main = () => {
     return (
         <div className="page-container">
             <h1>메인 페이지</h1>
-            <p>{formattedDate} 인기글 목록</p>
-            {/* 7단계: 여기에 axios로 /api/board/popular를 호출하는 로직 추가 */}
-            <ul>
-                {/* html 내부에서 {} 는 자바스크립트에서 선언한 변수이름 상수이름 기능 구현을 작성 */}
-                {boards.map((b => (
-                    <li key={b.id}>{b.title}</li>
-                )))}
-            </ul>
+
+            <p className="main-date">{formattedDate}</p>
+
+            <section className="main-section">
+                <div className="section-header">
+                    <h2>인기글</h2>
+                    <button
+                        onClick={() => navigate('/board')}
+                        className="view-more-btn">
+                        더보기 →
+                    </button>
+                </div>
+
+                {boards.length > 0 ?(
+                    <ul className="board-list">
+                        {boards.map((board) => (
+                            <li key={board.id}
+                                className="board-item"
+                                onClick={() => handleBoardClick(board.id)}
+                            >
+                                <span className="board-title">{board.title}</span>
+                                <div className="board-meta">
+                                    <span className="board-author">{board.writer}</span>
+                                    <span className="board-views">{board.views}</span>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                ): (
+                    <p className="no-data">인기글이 없습니다.</p>
+                )}
+            </section>
         </div>
     );
 };
