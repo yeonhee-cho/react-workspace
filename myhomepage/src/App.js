@@ -37,7 +37,7 @@ function App() {
 
     return (
         <div className="App">
-            {/* 모든 곳에서 실시간 알림  토스트 */}
+            {/* 모든 곳에서 실시간 알림 토스트 */}
             <NotificationToast/>
             {/* --- 5. 공통 내비게이션 바 --- */}
             <nav className="navbar">

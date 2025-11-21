@@ -18,7 +18,7 @@ root.render(
             <ToastProvider>
                 {/* 3. BrowserRouter로 앱을 감쌉니다 (페이지 이동 기능) */}
                 <BrowserRouter>
-                    <App /> {/* 로그인 인증 TODO */}
+                    <App /> {/* 로그인 인증, 알림에 대한 모든 설정에 대해 적용 */}
                 </BrowserRouter>
             </ToastProvider>
         </AuthProvider>

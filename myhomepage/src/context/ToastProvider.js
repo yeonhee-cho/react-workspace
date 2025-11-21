@@ -14,6 +14,21 @@ const ToastProvider = ({children}) => {
     const [notifications, setNotifications] = useState([]);
     const [stompClient, setStompClient] = useState(null);
 
+    // 알림 삭제 함수
+    const removeNotification =(id) => {
+        setNotifications(prev => prev.filter(n => n.id !== id));
+    }
+
+    // 알림 읽음 처리
+    const markAsRead =(id) => {
+        setNotifications(prev => prev.map(n => n.id === id ? {...n,read:true}:n));
+    }
+
+    // 모든 알림 삭제
+    const clearAll = () => {
+        setNotifications([]);
+    }
+
     useEffect(() => {
         // 웹 소켓 연결
         const socket = new SockJS("http://localhost:8085/ws");
@@ -21,12 +36,13 @@ const ToastProvider = ({children}) => {
             webSocketFactory:() => socket,
             reconnextDelat : 5000,
         });
+        /*
         client.onConnect = () => {
             console.log("🎈🎈🎈 웹소켓 연결 성공 🎈🎈🎈")
             client.subscribe('/topic/notifications', (msg) => {
                 const n = JSON.parse(msg.body);
 
-                console.log("✨✨✨ 받은 알림 ✨✨✨ : ", msg)
+                console.log("✨✨✨ 받은 알림 ✨✨✨ : ", n)
                 // 알림 추가
                 setNotifications(p => [...p, {
                         id: Date.now(),
@@ -34,14 +50,29 @@ const ToastProvider = ({children}) => {
                         read:false
                     }]
                 );
-                /*setNotifications(p => {
-                    const newNotifications =  [...p, {
-                        id: Date.now(),
-                        ...n,
-                        read:false
-                    }];
-                    return newNotifications;
-                });*/
+            });
+        };
+        */
+        client.onConnect = () => {
+            console.log("🎈🎈🎈 웹소켓 연결 성공 🎈🎈🎈")
+            client.subscribe('/topic/notifications', (msg) => {
+                const n = JSON.parse(msg.body);
+
+                console.log("✨✨✨ 받은 알림 ✨✨✨ : ", n)
+                // 알림 추가
+                const newNotifications = {
+                    id: Date.now(),
+                    ...n,
+                    read:false
+                }
+                setNotifications(p => [...p, newNotifications]);
+
+                // 5초 후 자동 삭제
+                /*
+                setTimeout(() => {
+                    removeNotification(newNotifications.id);
+                },5000);
+                */
             });
         };
 
