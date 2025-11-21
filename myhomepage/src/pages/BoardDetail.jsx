@@ -12,7 +12,7 @@ const BoardDetail = () => {
     useEffect(() => {
         axios.get(`http://localhost:8085/api/board/${id}`)
             .then((res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setBoard(res.data);
                 setLoading (false); // 로딩 상태 해지
             }))

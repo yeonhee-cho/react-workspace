@@ -2,6 +2,9 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 
+/**
+ * TODO 게시물 작성 시, 작성자를 로그인한 유저 이름을 가져오고, 변경 불가능하게 설정
+ */
 // 글쓰기
 const Write = () => {
     // form 데이터 내부 초기값 
