@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import {goToPage, pageClickHandler} from "../context/scripts";
 
 const Products = () => {
     const navigate = useNavigate();
@@ -45,8 +46,14 @@ const Products = () => {
         filterProducts()
     }
 
+    /*
     const handleProductClick = (id) => {
         navigate(`/product/${id}`);
+    }
+     */
+
+    const handleProductClick = (id) => {
+        goToPage(navigate, `/product/${id}`)
     }
 
     const formatPrice = (price) => {

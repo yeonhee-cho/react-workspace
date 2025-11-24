@@ -44,7 +44,9 @@ export const withLoading = async (abc, setLoading) => {
 // 네비게이트
 
 // ====== 네비게이트 관련 함수 ======
+// const navigate = useNavigate(); -> 왜 안돼...?
 // 게시글 상세보기로 이동
+/*
 export const navigateToBoard = (navigate, boardId) => {
     navigate(`/board/${boardId}`);
 }
@@ -52,8 +54,13 @@ export const navigateToBoard = (navigate, boardId) => {
 export const navigateToProduct = (navigate, boardId) => {
     navigate(`/product/${boardId}`);
 }
-
+*/
 // 이거 하나만 있어도 되는 이유
+/*
+const handleProductClick = (id) => {
+    goToPage(navigate, `/product/${id}`)
+}
+*/
 export const goToPage = (navigate, path) => {
     navigate(path);
 }
@@ -72,7 +79,72 @@ export const goBack = (navigate, confirmMessage = null) => {
 }
 
 // fetchProduct
+// ====== API 데이터 패칭 관련 함수 ======
+const API_URL = 'http://localhost:8085'
+export const API_URLS = {
+    AUTH: `${API_URL}/api/auth`,
+    BOARD: `${API_URL}/api/board`,
+    PRODUCT: `${API_URL}/api/product`,
+    EMAIL : `${API_URL}/api/email`,
+}
 
+export const fetchAllBoards = async (axios, setBoards, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.BOARD}/all`);
+        setBoards(res.data);
+    } catch (err) {
+        alert("데이터를 가져올 수 없습니다.");
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
+
+export const fetchAllPopularBoards = async (axios, setBoards, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.BOARD}/popular`);
+        setBoards(res.data);
+    } catch (err) {
+        alert("데이터를 가져올 수 없습니다.");
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
+
+
+export const fetchAllProducts = async (axios, setProducts, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.RPODUCT}/all`);
+        setProducts(res.data);
+    } catch (err) {
+        alert("데이터를 가져올 수 없습니다.");
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
+
+export const fetchProductDetail = async (axios, id, setProducts, navigate, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
+        setProducts(res.data);
+    } catch (err) {
+        alert("상품 정보를 불러올 수 없습니다.");
+        navigate("/products"); // App.js 에서 Route 내부에 작성한 프론트엔드 게시물 전체보는 경로 설정
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
+
+export const fetchBoardDetail = async (axios, id, setBoard, navigate, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
+        setBoard(res.data);
+    } catch (err) {
+        alert("게시물 정보를 불러올 수 없습니다.");
+        navigate("/board"); // App.js 에서 Route 내부에 작성한 프론트엔드 게시물 전체보는 경로 설정
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
 // 날짜 포멧팅
 
 // 가격 포멧팅
