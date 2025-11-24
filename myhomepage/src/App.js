@@ -10,7 +10,9 @@ import './App.css';
 import BoardDetail from "./pages/BoardDetail";
 import {useAuth} from "./context/AuthContext";
 import NotificationToast from "./components/NotificationToast";
-import ProductUpload from "./pages/ProductUpload"; // 단순히 가져와서 적용할 때는 from 생략
+import ProductUpload from "./pages/ProductUpload";
+import ProductDetail from "./pages/ProductDetail";
+import Products from "./pages/Products"; // 단순히 가져와서 적용할 때는 from 생략
 
 // 1. 라우팅에 필요한 컴포넌트 임포트
 //    공통 스타일 임포트
@@ -46,19 +48,20 @@ function App() {
                 <div className="nav-links">
                     <NavLink to="/">메인</NavLink>
                     <NavLink to="/board">게시판</NavLink>
+                    <NavLink to="/products">상품</NavLink>
                     {/* 로그인 상태에 따라 다른 메뉴 표시*/}
                     {isAuthenticated ? /* return 이 생략된 형태 */ (
-                            <>
-                                <NavLink to="/write">글쓰기</NavLink>
-                                <NavLink to="/mypage">마이페이지</NavLink>
-                                <NavLink to="/upload">상품 업로드</NavLink>
+                        <>
+                            <NavLink to="/write">글쓰기</NavLink>
+                            <NavLink to="/mypage">마이페이지</NavLink>
+                            <NavLink to="/upload">상품 업로드</NavLink>
 
-                                <button onClick={handleLogout} className="logout-btn">로그아웃</button>
+                            <button onClick={handleLogout} className="logout-btn">로그아웃</button>
 
-                                {/* /api/auth/check 에서 로그인 상태가 확인되어야지 표기 */}
-                                <span className="user-email">{user?.memberEmail}</span>
-                            </>
-                        ) : (<NavLink to="/login">로그인</NavLink>)
+                            {/* /api/auth/check 에서 로그인 상태가 확인되어야지 표기 */}
+                            <span className="user-email">{user?.memberEmail}</span>
+                        </>
+                    ) : (<NavLink to="/login">로그인</NavLink>)
                     }
                 </div>
 
@@ -66,15 +69,17 @@ function App() {
 
             {/* --- 6. 페이지가 렌더링될 영역 --- */}
             <Routes>
-                <Route path="/" element={<Main/>} />
-                <Route path="/board" element={<Board/>} />
+                <Route path="/" element={<Main/>}/>
+                <Route path="/board" element={<Board/>}/>
                 {/* /board/:id id  */}
-                <Route path="/board/:id" element={<BoardDetail/>} />
-                <Route path="/signup" element={<Signup/>} />
-                <Route path="/login" element={<Login/>} />
-                <Route path="/mypage" element={<MyPage/>} />
-                <Route path="/write" element={<Write/>} />
-                <Route path="/upload" element={<ProductUpload/>} />
+                <Route path="/board/:id" element={<BoardDetail/>}/>
+                <Route path="/signup" element={<Signup/>}/>
+                <Route path="/login" element={<Login/>}/>
+                <Route path="/mypage" element={<MyPage/>}/>
+                <Route path="/write" element={<Write/>}/>
+                <Route path="/upload" element={<ProductUpload/>}/>
+                <Route path="/products" element={<Products/>}/>
+                <Route path="/product/:id" element={<ProductDetail/>}/>
             </Routes>
 
             {/* 공통 푸터 - 모든 페이지에 보이는 푸터를 작성 */}

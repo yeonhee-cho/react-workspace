@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="useEffect" />
+    <list default="true" id="7556fd4b-7cb5-49e4-8b32-9e73d0e43f27" name="변경" comment="useEffect">
+      <change beforePath="$PROJECT_DIR$/../myhomepage/src/pages/Main.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../myhomepage/src/pages/Main.jsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -125,6 +127,7 @@
       <workItem from="1763111821460" duration="1000" />
       <workItem from="1763111831518" duration="2000" />
       <workItem from="1763512575967" duration="358000" />
+      <workItem from="1763944605647" duration="102000" />
     </task>
     <task id="LOCAL-00001" summary="react - start">
       <option name="closed" value="true" />
