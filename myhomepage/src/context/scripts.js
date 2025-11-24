@@ -110,6 +110,17 @@ export const fetchAllPopularBoards = async (axios, setBoards, setLoading = null)
     }
 }
 
+export const fetchBoardDetail = async (axios, id, setBoard, navigate, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
+        setBoard(res.data);
+    } catch (err) {
+        alert("게시물 정보를 불러올 수 없습니다.");
+        navigate("/board"); // App.js 에서 Route 내부에 작성한 프론트엔드 게시물 전체보는 경로 설정
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
 
 export const fetchAllProducts = async (axios, setProducts, setLoading = null) => {
     try {
@@ -134,17 +145,6 @@ export const fetchProductDetail = async (axios, id, setProducts, navigate, setLo
     }
 }
 
-export const fetchBoardDetail = async (axios, id, setBoard, navigate, setLoading = null) => {
-    try {
-        const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
-        setBoard(res.data);
-    } catch (err) {
-        alert("게시물 정보를 불러올 수 없습니다.");
-        navigate("/board"); // App.js 에서 Route 내부에 작성한 프론트엔드 게시물 전체보는 경로 설정
-    } finally {
-        if(setLoading) setLoading(false);
-    }
-}
 // 날짜 포멧팅
 
 // 가격 포멧팅
