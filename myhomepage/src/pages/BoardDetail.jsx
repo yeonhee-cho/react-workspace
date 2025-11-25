@@ -8,12 +8,11 @@ const BoardDetail = () => {
     const {id} = useParams(); // URL에서 id 값 가져오기
     const navigate = useNavigate();
     const [board, setBoard] = useState(null);
-
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchBoardDetail(axios, id, setBoard, navigate)
-    }, [id, navigate]);
+        fetchBoardDetail(axios, id, setBoard, navigate);
+    }, [id]);
 
     // 로딩 중일 때
     if(loading) {

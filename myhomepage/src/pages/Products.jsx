@@ -6,7 +6,8 @@ import {fetchAllProducts, goToPage, pageClickHandler} from "../context/scripts";
 const Products = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [filterProduct, setFilterProduct] = useState(null);
+    // null -> []
+    const [filterProduct, setFilterProduct] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectCategory, setSelectCategory] = useState('전체');
     const [searchKeyword, setSearchKeyword] = useState('');
@@ -15,6 +16,9 @@ const Products = () => {
 
     useEffect(() => {
         fetchAllProducts(axios, setProducts);
+        // 현재는 setFillterProduct 로 상품을 조회하지만 setProducts 로 변경
+        fetchAllProducts(axios, setFilterProduct);
+        // fetchAllProducts(axios, setProducts);
     }, []);
 
     useEffect(() => {

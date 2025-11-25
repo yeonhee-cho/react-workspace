@@ -80,6 +80,15 @@ export const goBack = (navigate, confirmMessage = null) => {
 
 // fetchProduct
 // ====== API 데이터 패칭 관련 함수 ======
+/*
+* const API_URL 의 경우 내부에서만 사용할 수 있도록 설정된 상태
+* 외부에서 사용 가능한 형태로 변경하길 원한다면
+* export const API_URL 로 export 를 추가하면 된다.
+*
+* export const API_URLS의 경우 외부 내부 어디서근 활용 가능하도록 설정
+* 내부에서만 사용 가능한 형태로 변경하길 원한다면
+* export 를 제거한다.
+* */
 const API_URL = 'http://localhost:8085'
 export const API_URLS = {
     AUTH: `${API_URL}/api/auth`,
@@ -148,6 +157,9 @@ export const fetchProductDetail = async (axios, id, setProducts, navigate, setLo
 // 날짜 포멧팅
 
 // 가격 포멧팅
+export const formatPrice = (price) => {
+    return new Intl.NumberFormat("ko-KR").format(price);
+}
 
 // 카테고리
 
