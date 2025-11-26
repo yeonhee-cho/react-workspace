@@ -6,9 +6,9 @@ const NotificationToast = () => {
     const { notifications, removeNotification } = useToast();
 
     // console.log로 boardId 확인하고 notificationController 과 toast 수정하기
-    console.log("notifications : ", notifications);
-    console.log("notifications.title : ", notifications.title);
-    console.log("notifications.boardId : ", notifications.boardId);
+    // console.log("notifications : ", notifications);
+    // console.log("notifications.title : ", notifications.title);
+    // console.log("notifications.boardId : ", notifications.boardId);
 
     const navigate = useNavigate();
     const handleNotificationClick = (notification) => {

@@ -1,5 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
+import {fetchSignup, handleInputChange} from "../service/scripts";
 
 // 회원가입
 const Signup = () => {
@@ -24,12 +25,12 @@ const Signup = () => {
         memberPw: false,
         memberPwConfirm: false,
         authKey: false
-    })
+    });
     const [timer, setTimer] = useState({
         min: 4,
         sec: 59,
         active: false
-    })
+    });
     const timerRef = useRef(null);
 
     // 초의 경우 지속적으로 1초마다 시간을 줄이고, 0분 0초일 경우 인증 실패 처리
@@ -90,7 +91,7 @@ const Signup = () => {
         return (
             num < 10 ? `0${num}`: num
         )
-    }
+    };
 
     // 인증키 관련된 백엔드 기능을 수행하고, 수행한 결과를 표기하기 위하여
     // 백엔드가 실행되고, 실행된 결과를 res.status 형태로 반환하기 전까지 js 하위기능 잠시 멈춤 처리
@@ -146,13 +147,13 @@ const Signup = () => {
     const checkAuthKey = async () => {
         if(timer.min === 0 && timer.sec === 0) {
             alert("인증번호 입력 시간을 초과하였습니다.");
-            return
+            return;
         }
 
         // Q: !== 6 해주면 안되는가? ->
-        if(formData.authKey.length < 6 || formData.authKey.length > 6){
+        if(formData.authKey.length < 6 || formData.authKey.length > 6) {
             alert("인증번호를 정확히 입력해주세요.");
-            return
+            return;
         }
 
         try { // 프론트엔드에서 백엔드로 연결 시도
@@ -209,35 +210,7 @@ const Signup = () => {
         // 제출 관련 기능 설정
         e.preventDefault(); // 일시 정지 제출 상태
 
-        // 필수 항목 체크
-        if(!formData.memberName) {
-            alert("이름을 입력해주세요.")
-            return; // 돌려보내기 하위 기능 작동 x
-        }
-
-        // DB에 저장할 데이터만 전송
-        // body 형태로 전달하기
-        // requestBody requestParam
-        //    body        header
-
-        const signupData = {
-            memberName: formData.memberName,
-            memberEmail: formData.memberEmail,
-            memberPassword: formData.memberPw,
-        }
-
-        const res = await axios.post("/api/auth/signup", signupData);
-        if(res.data === "success" || res.status === 200) {
-            console.log("res.status : ", res.status);
-            console.log("res.data : ", res.data);
-            alert("회원가입이 완료되었습니다.")
-            window.location.href = "/";
-        } else if (res.data === "duplicate") {
-            alert("이미 가입된 이메일 입니다.")
-        } else {
-            alert("회원가입에 실패하였습니다.")
-        }
-
+        await fetchSignup(axios);
         // axios.post 로 저장
         /* 백엔드에서는 무사히 저장되지만 프론트엔드에서 회원가입 실패가 뜬다. */
         // 비동기 vs 동기 무조건 알고 있기
@@ -251,17 +224,7 @@ const Signup = () => {
         // }
     }
     const handleChange = (e) => {
-        const {name, value} = e.target;
-
-        setFormData(p => ({
-            // p 기존의 name과 name 에 해당하는 value 데이터 보유한 변수 이름
-            // ...p : 기존 name 키 value 데이터의 값에
-            // , [name] : value 이벤트가 감지된 name 의 value 값으로
-            // 데이터를 수정해서 추가
-            // 없던 키-값을 추가해서
-            // formData 변수 이름에 setter 로 저장
-            ...p, [name] : value
-        }))
+        handleInputChange(e, setFormData);
     }
     return (
         <div className="page-container">

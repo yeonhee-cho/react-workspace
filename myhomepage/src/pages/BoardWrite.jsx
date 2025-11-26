@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthContext";
-import {boardSave} from "../context/scripts";
+import {boardSave, handleInputChange} from "../service/scripts";
 
 /**
  * 게시물 작성 시, 작성자를 로그인한 유저 이름을 가져오고, 변경 불가능하게 설정 <p> 태그 활용
@@ -51,10 +51,7 @@ const BoardWrite = () => {
     }
 
     const handleChange = (e) => {
-        const {name, value} = e.target;
-        setFormData(p => ({
-            ...p, [name] : value
-        }))
+        handleInputChange(e, setFormData);
     }
 
     // ok 를 할 경우 게시물 목록으로 돌려보내기

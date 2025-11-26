@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchAllProducts, goToPage, renderNoData} from "../context/scripts";
+import {fetchAllProducts, formatPrice, goToPage, renderNoData} from "../service/scripts";
 
 // ctrl  + alt + l 정렬
 const Products = () => {
@@ -48,10 +48,6 @@ const Products = () => {
 
     const handleProductClick = (id) => {
         goToPage(navigate, `/product/${id}`)
-    }
-
-    const formatPrice = (price) => {
-        return new Intl.NumberFormat("ko-KR").format(price);
     }
 
     if (loading) {

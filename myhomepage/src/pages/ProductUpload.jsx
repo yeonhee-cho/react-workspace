@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
+import {handleInputChange} from "../service/scripts";
 
 const ProductUpload = () => {
     const navigate = useNavigate();
@@ -23,7 +24,7 @@ const ProductUpload = () => {
     ]
 
     // 입력값 변경 핸들러
-    const handleChange = (e) => {
+    /*const handleChange = (e) => {
         const {name, value} = e.target;
 
         setProduct(p => ({
@@ -36,7 +37,23 @@ const ProductUpload = () => {
                 ...p,[name]: ''
             }));
         }
-    };
+    };*/
+
+    /*
+    * 기존 변수 명칭은 모두 setFormData 사용
+    * setProduct 변수 명칭 사용
+    * 제품 업로드를 했을 때 제품이 무사히 업로드 되는지 확인
+    * */
+      const handleChange = (e) => {
+        const {name, value} = e.target;
+        handleInputChange(e, setProduct);
+        // 입력 시 해당 필드의 에러 메세지 제거
+        if(errors[name]) {
+            setErrors(p => ({
+                ...p, [name]:''
+            }));
+        }
+    }
 
     // 폼 유효성 검사
     const validateForm = () => {
@@ -62,7 +79,7 @@ const ProductUpload = () => {
             const r = await axios.post('http://localhost:8085/api/product', product);
             if(r.data.success) {
                 alert(r.data.message);
-                navigate("/")
+                navigate("/");
             }
         } catch (err) {
             // 백엔드 연결 실패

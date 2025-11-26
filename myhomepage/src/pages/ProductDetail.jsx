@@ -1,7 +1,7 @@
 import {data, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchProductDetail, renderLoading, deleteProduct} from "../context/scripts";
+import {fetchProductDetail, renderLoading, deleteProduct} from "../service/scripts";
 
 /*
 * TODO
@@ -18,7 +18,7 @@ const ProductDetail = () => {
     const [loading, setLoding] = useState(true);
 
     useEffect(() => {
-        fetchProductDetail(axios, id, setProduct, navigate);
+        fetchProductDetail(axios, id, setProduct, navigate, setLoding);
     }, [id]); // id 값이 조회될 때마다 상품 상세보기 데이터 조회
 
     // 삭제 버튼에 직접적으로 기능을 작성할 수 있지만

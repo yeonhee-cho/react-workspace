@@ -3,7 +3,7 @@ import {useContext, useEffect} from "react";
 // default export = AuthContext
 //         export = {useAuth} 사용할 수 있다.
 import AuthContext, {useAuth} from "../context/AuthContext";
-import {renderLoading} from "../context/scripts";
+import {renderLoading} from "../service/scripts";
 // 마이페이지
 /*
 * 로그인 상태일 때만 접근 가능
@@ -81,7 +81,11 @@ const MyPage = () => {
                         <div className="info-item">
                             <span className="info-label">가입일</span>
                             <span className="info-value">
-                                {user.createdAt ? new Date(user.createdAt).toLocaleDateString('ko-KR') : '-'}
+                                {user.memberCreatedAt
+                                    ?
+                                    new Date(user.memberCreatedAt).toLocaleDateString('ko-KR')
+                                    :
+                                    '-'}
                             </span>
                         </div>
                     </div>
