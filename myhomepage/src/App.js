@@ -5,14 +5,15 @@ import Board from "./pages/Board";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import MyPage from "./pages/MyPage";
-import Write from "./pages/Write";
+import BoardWrite from "./pages/BoardWrite";
 import './App.css';
 import BoardDetail from "./pages/BoardDetail";
 import {useAuth} from "./context/AuthContext";
 import NotificationToast from "./components/NotificationToast";
 import ProductUpload from "./pages/ProductUpload";
 import ProductDetail from "./pages/ProductDetail";
-import Products from "./pages/Products"; // 단순히 가져와서 적용할 때는 from 생략
+import Products from "./pages/Products";
+import MyPageEdit from "./pages/MypageEdit"; // 단순히 가져와서 적용할 때는 from 생략
 
 // 1. 라우팅에 필요한 컴포넌트 임포트
 //    공통 스타일 임포트
@@ -76,7 +77,8 @@ function App() {
                 <Route path="/signup" element={<Signup/>}/>
                 <Route path="/login" element={<Login/>}/>
                 <Route path="/mypage" element={<MyPage/>}/>
-                <Route path="/write" element={<Write/>}/>
+                <Route path="/mypage/edit" element={<MyPageEdit/>}/>
+                <Route path="/write" element={<BoardWrite/>}/>
                 <Route path="/upload" element={<ProductUpload/>}/>
                 <Route path="/products" element={<Products/>}/>
                 <Route path="/product/:id" element={<ProductDetail/>}/>

@@ -1,8 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchAllProducts, goToPage, pageClickHandler} from "../context/scripts";
+import {fetchAllProducts, goToPage, renderNoData} from "../context/scripts";
 
+// ctrl  + alt + l 정렬
 const Products = () => {
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
@@ -15,9 +16,9 @@ const Products = () => {
     const categories = ["전체", "전자기기", "의류", "식품", "도서", "생확용품", "기타"];
 
     useEffect(() => {
-        fetchAllProducts(axios, setProducts);
+        fetchAllProducts(axios, setProducts, setLoading);
         // 현재는 setFillterProduct 로 상품을 조회하지만 setProducts 로 변경
-        fetchAllProducts(axios, setFilterProduct);
+        fetchAllProducts(axios, setFilterProduct, setLoading);
         // fetchAllProducts(axios, setProducts);
     }, []);
 
@@ -53,13 +54,13 @@ const Products = () => {
         return new Intl.NumberFormat("ko-KR").format(price);
     }
 
-    if(loading) {
-        return(
+    if (loading) {
+        return (
             <div className="page-container">
                 <div className="loading-container">
                     <div className="loading-spinner">
-                        <p>로딩 중</p>
                     </div>
+                    <p>로딩 중</p>
                 </div>
             </div>
         );
@@ -69,7 +70,7 @@ const Products = () => {
             <div className="product-header">
                 <h2>상품 목록</h2>
                 <button className="btn-add-product"
-                onClick={() => navigate(`/product/upload`)}>
+                        onClick={() => navigate(`/product/upload`)}>
                     + 상품 등록
                 </button>
             </div>
@@ -78,9 +79,9 @@ const Products = () => {
             <div className="category-filter">
                 {categories.map((c) => (
                     <button
-                    key={c}
-                    className={`category-btn ${selectCategory} === c ? "active" : ""}`}
-                    onClick={() => setSelectCategory((c))}>
+                        key={c}
+                        className={`category-btn ${selectCategory} === c ? "active" : ""}`}
+                        onClick={() => setSelectCategory((c))}>
                         {c}
                     </button>
                 ))}
@@ -89,7 +90,7 @@ const Products = () => {
             {/*검색박스*/}
             <form className="search-box" onSubmit={handleSearch}>
                 <input type="text" placeholder="상품명, 상품코드, 제조사로 검색"
-                       value={searchKeyword} onChange={(e)=> setSearchKeyword()} />
+                       value={searchKeyword} onChange={(e) => setSearchKeyword()}/>
                 <button>검색</button>
             </form>
 
@@ -108,7 +109,7 @@ const Products = () => {
 
                             <div className="product-image">
                                 {product.imageUrl ? (
-                                    <img src={product.imageUrl} alt={product.productName}/>
+                                        <img src={product.imageUrl} alt={product.productName}/>
                                     ) :
                                     (
                                         <img src="/static/img/default.png" alt="default"/>
@@ -130,17 +131,22 @@ const Products = () => {
                                     <span className="product-price">
                                         {formatPrice(product.price)} 원
                                     </span>
-                                    <span className={`product-stock ${product.stock < 10 ? "매진임박" : ""}`}></span>
+                                    <span
+                                        className={`product-stock ${product.stockQuantity < 10 ? "매진임박" : ""}`}></span>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
-            ):(
-                <div className="no-products">
-                    <p>등록된 상품이 없습니다.</p>
-                </div>
+            ) : (
+                renderNoData("등록된 상품이 존재하지 않습니다.")
             )}
+            {/*
+            {]중괄호 자체가 js 기능들을 모두 쓴다는 표기
+            {] 내부에 ui를 작성할 경우 return 을 생략한 () 가 필요함
+            rederNoData()에서 이미 () 형태로 ui를 작성했기 때문에
+            굳이 한 번 더 ()를 작성해서 renderNoData()로 작성할 필요가 없다.
+            */}
         </div>
     )
 }

@@ -1,26 +1,34 @@
 /*****************************************************
    컴포넌트 들에서 공통으로 사용하는 기능 작성하는 js
  ****************************************************/
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
+// import axios from "axios"; 안됨
 
 // 기능을 나눌 때 여러 ui 태그에서 반복적으로 사용하는 기능인가?
 
-// 로딩
-
 // ====== 로딩 관련 함수 ======
-export const renderLoading = (message = '로딩중') => {
+/**
+ * 로딩 함수
+ * @param message 로딩 시 나오는 메세지
+ * @returns {JSX.Element}
+ */
+export  const renderLoading = (message = '로딩중') => {
     return(
         <div className="page-container">
             <div className="loading-container">
                 <div className="loading-spinner">
-                    <p>{message}</p>
                 </div>
+                <p>{message}</p>
             </div>
         </div>
     );
 }
 
-// 로딩 후 데이터가 존재하지 않을 경우
+/**
+ * 로딩 후 데이터가 존재하지 않을 경우
+ * @param message 안내 메세지
+ * @returns {JSX.Element}
+ */
 export const renderNoData = (message = '데이터가 없습니다.') => {
     return (
         <div className="no-data">
@@ -29,12 +37,17 @@ export const renderNoData = (message = '데이터가 없습니다.') => {
     )
 }
 
-// 로딩 후 상태 관리 래퍼 함수
-// abc 에 해당하는 데이터 가져오기 기능을 수행하고, 
-// 데이터가 무사히 들어오면 로딩 멈춤
+/**
+ * 로딩 후 상태 관리 래퍼 함수
+ * abc 에 해당하는 데이터 가져오기 기능을 수행하고,
+ * 데이터가 무사히 들어오면 로딩 멈춤
+ * @param abc
+ * @param setLoading
+ * @returns {Promise<void>}
+ */
 export const withLoading = async (abc, setLoading) => {
     if(setLoading) setLoading(true);
-    try {
+    try{
         await abc();
     } finally {
         if(setLoading) setLoading(false);
@@ -44,8 +57,8 @@ export const withLoading = async (abc, setLoading) => {
 // 네비게이트
 
 // ====== 네비게이트 관련 함수 ======
+
 // const navigate = useNavigate(); -> 왜 안돼...?
-// 게시글 상세보기로 이동
 /*
 export const navigateToBoard = (navigate, boardId) => {
     navigate(`/board/${boardId}`);
@@ -55,28 +68,41 @@ export const navigateToProduct = (navigate, boardId) => {
     navigate(`/product/${boardId}`);
 }
 */
+
 // 이거 하나만 있어도 되는 이유
 /*
 const handleProductClick = (id) => {
     goToPage(navigate, `/product/${id}`)
 }
 */
+
+/**
+ * 페이지 이동 함수
+ * @param navigate
+ * @param path 경로
+ */
 export const goToPage = (navigate, path) => {
     navigate(path);
 }
 
-// navigateToBoard, navigateToProduct, goToPage만 있으면 필요 없음
-export const pageClickHandler = (navigate, basePath) => {
-    return (id) => {
-        navigate(`${basePath}/${id}`);
-    }
-}
 
+/**
+ * 뒤로가기
+ * @param navigate
+ * @param confirmMessage
+ */
 export const goBack = (navigate, confirmMessage = null) => {
     if(confirmMessage) {
         if(window.confirm(confirmMessage)) navigate(-1);
     } else navigate(-1);
 }
+
+// // navigateToBoard, navigateToProduct, goToPage만 있으면 필요 없음
+// export const pageClickHandler = (navigate, basePath) => {
+//     return (id) => {
+//         navigate(`${basePath}/${id}`);
+//     }
+// }
 
 // fetchProduct
 // ====== API 데이터 패칭 관련 함수 ======
@@ -90,6 +116,7 @@ export const goBack = (navigate, confirmMessage = null) => {
 * export 를 제거한다.
 * */
 const API_URL = 'http://localhost:8085'
+
 export const API_URLS = {
     AUTH: `${API_URL}/api/auth`,
     BOARD: `${API_URL}/api/board`,
@@ -97,6 +124,13 @@ export const API_URLS = {
     EMAIL : `${API_URL}/api/email`,
 }
 
+/**
+ * 게시물 가져오기
+ * @param axios
+ * @param setBoards
+ * @param setLoading
+ * @returns {Promise<void>}
+ */
 export const fetchAllBoards = async (axios, setBoards, setLoading = null) => {
     try {
         const res = await axios.get(`${API_URLS.BOARD}/all`);
@@ -108,6 +142,13 @@ export const fetchAllBoards = async (axios, setBoards, setLoading = null) => {
     }
 }
 
+/**
+ * 게시물 인기가져오기
+ * @param axios
+ * @param setBoards
+ * @param setLoading
+ * @returns {Promise<void>}
+ */
 export const fetchAllPopularBoards = async (axios, setBoards, setLoading = null) => {
     try {
         const res = await axios.get(`${API_URLS.BOARD}/popular`);
@@ -118,10 +159,18 @@ export const fetchAllPopularBoards = async (axios, setBoards, setLoading = null)
         if(setLoading) setLoading(false);
     }
 }
-
+/**
+ * 게시물 상세정보
+ * @param axios
+ * @param id
+ * @param setBoard
+ * @param navigate
+ * @param setLoading
+ * @returns {Promise<void>}
+ */
 export const fetchBoardDetail = async (axios, id, setBoard, navigate, setLoading = null) => {
     try {
-        const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
+        const res = await axios.get(`${API_URLS.BOARD}/${id}`);
         setBoard(res.data);
     } catch (err) {
         alert("게시물 정보를 불러올 수 없습니다.");
@@ -131,9 +180,36 @@ export const fetchBoardDetail = async (axios, id, setBoard, navigate, setLoading
     }
 }
 
+/**
+ * 게시글 저장
+ * @param axios
+ * @param formData
+ * @param navigate
+ * @returns {Promise<*>}
+ */
+export const boardSave = async (axios, formData, navigate) => {
+    try {
+        const res = await axios.post(`${API_URLS.BOARD}`, formData);
+        alert("글이 성공적으로 작성되었습니다.");
+        navigate("/board");
+        return res;
+    } catch (error) {
+        alert("글 작성 중 문제가 발생했습니다.");
+        console.log(error);
+        throw error;
+    }
+}
+
+/**
+ * 상품 가져오기
+ * @param axios
+ * @param setProducts
+ * @param setLoading
+ * @returns {Promise<void>}
+ */
 export const fetchAllProducts = async (axios, setProducts, setLoading = null) => {
     try {
-        const res = await axios.get(`${API_URLS.RPODUCT}/all`);
+        const res = await axios.get(`${API_URLS.PRODUCT}/all`);
         setProducts(res.data);
     } catch (err) {
         alert("데이터를 가져올 수 없습니다.");
@@ -142,6 +218,15 @@ export const fetchAllProducts = async (axios, setProducts, setLoading = null) =>
     }
 }
 
+/**
+ *
+ * @param axios
+ * @param id
+ * @param setProducts
+ * @param navigate
+ * @param setLoading
+ * @returns {Promise<void>}
+ */
 export const fetchProductDetail = async (axios, id, setProducts, navigate, setLoading = null) => {
     try {
         const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
@@ -154,9 +239,43 @@ export const fetchProductDetail = async (axios, id, setProducts, navigate, setLo
     }
 }
 
-// 날짜 포멧팅
+/**
+ *
+ * @param axios
+ * @param id
+ * @param navigate
+ * @returns {Promise<void>}
+ */
+export const deleteProduct = async (axios, id, navigate) => {
+    try {
+        const res = await axios.delete(`${API_URLS.PRODUCT}/${id}`); // NOTE 삭제?
+        alert("상품이 삭제되었습니다.");
+        navigate("/products");
+    }  catch (error) {
+        alert("상품 삭제에 실패했습니다.");
+    }
+}
 
-// 가격 포멧팅
+/**
+ * 날짜 포멧팅
+ * @param dateString
+ * @returns {string}
+ */
+export const formatDate = (dateString) => {
+    if(!dateString) return '-';
+    const date = new Date(dateString);
+    return date.toLocaleDateString("ko-KR", {
+        year:'numeric',
+        month:'long',
+        date:'numeric'
+    });
+}
+
+/**
+ * 가격 포멧팅
+ * @param price
+ * @returns {string}
+ */
 export const formatPrice = (price) => {
     return new Intl.NumberFormat("ko-KR").format(price);
 }

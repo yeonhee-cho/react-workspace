@@ -1,7 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchBoardDetail, renderLoading} from "../context/scripts";
+import {fetchBoardDetail, goToPage, renderLoading} from "../context/scripts";
 import {render} from "@testing-library/react";
 
 const BoardDetail = () => {
@@ -11,7 +11,7 @@ const BoardDetail = () => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchBoardDetail(axios, id, setBoard, navigate);
+        fetchBoardDetail(axios, id, setBoard, navigate, setLoading); // setLoading 인자 값 넣어주기!!
     }, [id]);
 
     // 로딩 중일 때
@@ -20,7 +20,8 @@ const BoardDetail = () => {
     }
 
     if(!board) {
-        return renderLoading("게시물을 찾을 수 없습니다.");
+        renderLoading("게시물을 찾을 수 없습니다.");
+        goToPage(navigate,"/board");
     }
 
     return (
@@ -33,7 +34,7 @@ const BoardDetail = () => {
             <div className="board-detail-content">
                 {board.content}
             </div>
-            <button className="button" onClick={() => navigate('/board')}>
+            <button className="button" onClick={() => goToPage(navigate, '/board')}>
                 목록으로
             </button>
         </div>

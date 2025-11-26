@@ -74,7 +74,7 @@ const ProductUpload = () => {
                 alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
             }
         } finally {
-            setLoding(false); // 상품 등록을 성공, 길패 이후 loading 중단
+            setLoding(false); // 상품 등록을 성공, 실패 이후 loading 중단
         }
     }
 
@@ -112,7 +112,7 @@ const ProductUpload = () => {
                             상품코드<span className="required">*</span>
                         </label>
                         <input
-                            type={"text"}
+                            type="text"
                             id="productCode"
                             name="productCode"
                             value={product.productCode}
