@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {fetchAllBoards, goToPage, renderLoading} from "../service/scripts";
+import {fetchAllBoards} from "../service/ApiService";
+import {goToPage, renderLoading} from "../service/commonService";
 
 // 전체 게시판
 // 1. const Board = () => () -> {} 형태로 변경

@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {useAuth} from "../context/AuthContext";
-import {fetchLogin, handleInputChange} from "../service/scripts";
+import {handleInputChange} from "../service/commonService";
 
 // 게시물이나, 회원가입에서 사용하는 방식으로
 // 단순 로그인과 비밀번호 찾기, 아이디 찾기에서는 지양하는 방식

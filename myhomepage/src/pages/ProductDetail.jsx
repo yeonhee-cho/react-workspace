@@ -1,13 +1,14 @@
 import {data, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchProductDetail, renderLoading, deleteProduct} from "../service/scripts";
+import {fetchProductDetail, deleteProduct} from "../service/ApiService";
+import {renderLoading} from "../service/commonService";
 
 /*
 * TODO
-* formatDate 를 scripts.js 이동 한 후, 기능 활용하기
+* formatDate 를 commonService.js 이동 한 후, 기능 활용하기
 * backend 활용하여, 삭제를 요청할 경우 비활성화 형태로 변경
-* scripts.js 에 작성한 formatPrice 를 활용해서 가격 한국표기로 보여주기
+* commonService.js 에 작성한 formatPrice 를 활용해서 가격 한국표기로 보여주기
 * 가격의 위치는 상품 코드 위에 위치
 * 재고가 10개 이상이면 개 글자를 뒤에 붙여주기
 * */

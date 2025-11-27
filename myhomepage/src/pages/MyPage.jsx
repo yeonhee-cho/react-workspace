@@ -3,7 +3,7 @@ import {useContext, useEffect} from "react";
 // default export = AuthContext
 //         export = {useAuth} 사용할 수 있다.
 import AuthContext, {useAuth} from "../context/AuthContext";
-import {renderLoading} from "../service/scripts";
+import {renderLoading} from "../service/commonService";
 // 마이페이지
 /*
 * 로그인 상태일 때만 접근 가능

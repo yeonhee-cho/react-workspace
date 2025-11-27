@@ -1,6 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
-import {fetchSignup, handleInputChange} from "../service/scripts";
+import {fetchSignup} from "../service/ApiService";
+import {handleInputChange} from "../service/commonService";
 
 // 회원가입
 const Signup = () => {
@@ -124,12 +125,11 @@ const Signup = () => {
         // console.log(res.data === 1,'===');
 
         // if(res.data && res.data !== null) { // TODO 응답 코드 1일 경우에만 인증되도록 수정
-        if(res.data && res.data !== null) {
+        if(res.data === 1) {
             setMessage(prev => ({...prev, authKey: '05:00'}));
             setTimer({min: 4, sec: 59, active: true});
             alert("인증번호가 발송되었습니다.");
         } else {
-            // console.log(res.data === 1)
             alert("인증 번호 발송 중 오류가 발생했습니다.");
         }
     }
@@ -157,6 +157,9 @@ const Signup = () => {
         }
 
         try { // 프론트엔드에서 백엔드로 연결 시도
+            console.log("이메일 : ", formData.memberEmail);
+            console.log("인증키 : ", formData.authKey);
+
             const res = await axios.post(
                 '/api/email/checkAuthKey', // 1번 데이터 보낼 백엔드 api endpoint 작성
                 {// 2번 어떤 데이터를 백엔드에 어떤 명칭을 전달할 것인지 작성
@@ -167,12 +170,11 @@ const Signup = () => {
 
             // console.log("res.data : ", res.data);
             // console.log("res.status : ", res.status);
-
             // if와 else 는 백엔드와 무사히 연결되었다는 전제하에
             // 백엔드에서 특정 데이터의 성공 유무만 확인할 뿐,
             // 프론트엔드와 백엔드가 제대로 연결되어있는지 확인할 수 없다
             // if(res.data && res.data !== null) { //  TODO 응답 코드 1일 경우에만 인증되도록 수정
-            if(res.data && res.data !== null) {
+            if(res.data === 1) {
                 clearInterval(timerRef.current);
                 setTimer({min: 0, sec: 0, active: false});
                 setMessage(prev => ({...prev, authKey: '인증되었습니다.'}));
@@ -183,6 +185,7 @@ const Signup = () => {
                 alert("인증번호가 일치하지 않습니다.");
             }
         } catch (err) { // 백엔드 연결 시도를 실패했을 경우
+            console.log("인증 확인 실패 : ", err);
             alert("인증 확인 중 서버에 연결되지 않는 오류가 발생했습니다.");
         }
     }
@@ -210,7 +213,7 @@ const Signup = () => {
         // 제출 관련 기능 설정
         e.preventDefault(); // 일시 정지 제출 상태
 
-        await fetchSignup(axios);
+        await fetchSignup(axios, formData);
         // axios.post 로 저장
         /* 백엔드에서는 무사히 저장되지만 프론트엔드에서 회원가입 실패가 뜬다. */
         // 비동기 vs 동기 무조건 알고 있기

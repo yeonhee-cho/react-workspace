@@ -2,7 +2,7 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {fetchAllPopularBoards, fetchAllProducts, renderLoading} from "../service/scripts";
+import {fetchAllPopularBoards, fetchAllProducts} from "../service/ApiService";
 
 const Main = () => {
     const navigate = useNavigate();

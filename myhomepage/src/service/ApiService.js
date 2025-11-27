@@ -47,7 +47,7 @@ export const fetchSignup = async (axios, formData)=> {
     }
 
     try {
-        const res = await axios.post("/api/auth/signup", signupData);
+        const res = await axios.post( API_URLS.AUTH + "/signup", signupData);
         if(res.data === "success" || res.status === 200) {
             console.log("res.status : ", res.status);
             console.log("res.data : ", res.data);
@@ -90,8 +90,37 @@ export const fetchSignup = async (axios, formData)=> {
 // 2. serviceimpl service.... 안해도 됨
 
 // 마이페이지 수정 = fetchMyPageEdit
-export const fetchMyPageEdit = () => {}
+export const fetchMyPageEdit = (axios, formData, setIsSubmitting) => {
+    // 수정 내용 키 : 데이터를 모두 담아갈 변수 이름
+    const updateData = {
+        memberName: formData.memberName,
+        memberEmail: formData.memberEmail,
+        memberPhone: formData.memberPhone,
+        memberAddress: formData.memberPostCode + formData.memberAddress + formData.memberDetailAddress,
+        newPassword: formData.newPassword || null,
+        currentPassword: formData.currentPassword || null,
+    }
 
+    try {
+        const res = axios.put(API_URLS.AUTH + "/update", updateData, {
+            withCredentials: true
+        });
+            if (res.data === "success" || res.status === 200) {
+                alert("회원정보가 수정되었습니다.");
+            } else if (res.data === "wrongPassword") {
+                alert("현재 비밀번호가 일치하지 않습니다.");
+            } else {
+                alert("회원정보 수정에 실패했습니다.");
+            }
+    } catch (e) {
+        alert("회원정보 수정 중 문제가 발생했습니다.");
+    } finally {
+        setIsSubmitting(false);
+    }
+}
+
+// ctrl + shift + f
+//ctrl + shift + r
 
 /***********************************************************************
  게시물 백엔드 관련 함수
@@ -164,7 +193,7 @@ export const boardSave = async (axios, formData, navigate) => {
         const res = await axios.post(`${API_URLS.BOARD}`, formData);
         alert("글이 성공적으로 작성되었습니다.");
         navigate("/board");
-        return res;
+        return res.data;
     } catch (error) {
         alert("글 작성 중 문제가 발생했습니다.");
         console.log(error);
@@ -230,68 +259,4 @@ export const deleteProduct = async (axios, id, navigate) => {
     }  catch (error) {
         alert("상품 삭제에 실패했습니다.");
     }
-}
-
-/***********************************************************************
- 날짜, 가격 포멧팅 함수
- **********************************************************************/
-
-/**
- * 날짜 포멧팅 함수
- * @param dateString 백엔드로 가져오거나, 작성해놓은 특정 날짜 데이터 매개변수 = 인자값으로 가져오기
- * @returns {string} 백엔드로 가져오거나, 작성해놓은 특정 날짜가 null 값으로 존재하지 않을 경우
- * @'-' 형태로 존재하지 않는 날짜 입니다. 대신 표기
- * @ 특정 날짜 데이터를 dataString 으로 가져와 사용할 수 있다면 날짜를 한국 기준으로 포멧팅하여 반환
- */
-export const formatDate = (dateString) => {
-    if(!dateString) return '-';
-    const date = new Date(dateString);
-    return date.toLocaleDateString("ko-KR", {
-        year:'numeric',
-        month:'long',
-        date:'numeric'
-    });
-}
-
-/**
- * 가격 포멧팅 함수
- * @param price 백엔드로 가져오거나, 작성해놓은 특정 가격 데이터 매개변수 = 인자값으로 가져오기
- * @returns {string} 백엔드로 가져오거나, 작성해놓은 특정 가격이 null 값으로 존재하지 않을 경우
- * @'-' 형태로 존재하지 않는 날짜 입니다. 대신 표기
- * @ 특정 날짜 데이터를 price 으로 가져와 사용할 수 있다면 가격을 한국 기준으로 포멧팅하여 반환
- * @ 만일 한국이 아니라 전세계를 기준으로 판매하길 원한다면
- * @return new Intl.NumberFormat("특정 나라 ip를 조회하여, 나라에 맞는 가격으로 보일 수 있도록 세팅").format(price);
- * ex) 넷플릭스, 유튜브, 구글 결제 등 다양한 회사에서 활용
- */
-export const formatPrice = (price) => {
-    return new Intl.NumberFormat("ko-KR").format(price);
-}
-
-/**
- * 인풋 태그 상태관리 함수
- * @param e 특정 input 에 이벤트(=행동)가 감지되면 동작
- * @param setFormData 백엔드로 전달할 formData 는 setter를 이용하여 데이터 변환을 추가 적용
- * @logic const { name, value } = e.target; 행동이 감지된 input 타켓의 name과 value 데이터를 가져와서 name = 키 명칭, value = 데이터 가져오기
- * @logic p => ({...p,[name]:value}); 기존에 존재하던 formData를 p 변수 이름 내부에 그대로 복제하여 담아둔 후
- * 변화가 감지된 키의 데이터를 p 변수에 추가하고, 키 명칭이 존재한다면 데이터 수정, 키 명칭이 존재하지 않는다면 키:데이터 추가
- * 변환된 p 전체 데이터는 setter 를 이용해서 formData 에 저장
- * @id js 상태 관리 할 때 주로 사용
- * @name 백엔드로 데이터를 주고 받을 때 사용
- * @className  스타일 세팅에 사용
- */
-export const handleInputChange = (e, setFormData) => {
-    const { name, value } = e.target;
-    setFormData(p => ({
-        // p 기존의 name과 name 에 해당하는 value 데이터 보유한 변수 이름
-        // ...p : 기존 name 키 value 데이터의 값에
-        // , [name] : value 이벤트가 감지된 name 의 value 값으로
-        // 데이터를 수정해서 추가
-        // 없던 키-값을 추가해서
-        // formData 변수 이름에 setter 로 저장
-        ...p,
-        [name]: value // [name]은 memberEmail 또는 memberPassword가 된다.
-        // id 키  명칭에 해당하는 데이터를 가지고 오길 원한다면 name 대신 is 활용
-    }))
-    // 기존에 formData에 내장되어있는 name에 해당하는 데이터를 클라이언트가 작성한 대로 ...(복사) 하여
-    // 덮어쓸 키의 name과 데이터를 저장
 }

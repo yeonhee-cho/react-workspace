@@ -1,7 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchAllProducts, formatPrice, goToPage, renderNoData} from "../service/scripts";
+import {fetchAllProducts} from "../service/ApiService";
+import {formatPrice, goToPage, renderNoData} from "../service/commonService";
 
 // ctrl  + alt + l 정렬
 const Products = () => {

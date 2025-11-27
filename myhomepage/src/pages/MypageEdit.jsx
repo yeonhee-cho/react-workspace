@@ -1,7 +1,9 @@
 import {useNavigate} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {useAuth} from "../context/AuthContext";
-import {handleInputChange} from "../service/scripts";
+import {handleInputChange} from "../service/commonService";
+import {fetchMyPageEdit} from "../service/ApiService";
+import axios from "axios";
 
 /* TODO 새로 작성한 비밀번호와 비밀번호 확인이 일치하는지 여부 기능 완성
 * 핸드폰 번호 css 다른 인풋창과 동일하게 스타일 작성
@@ -170,11 +172,13 @@ const MyPageEdit = () => {
             navigate("/mypage");
         }, 1000);
         */
+
+        fetchMyPageEdit(axios, formData, setIsSubmitting);
     }
 
     /*
     업로드, 업데이트와 같은 모든 사이트에서 활용하는 공통 기능으로
-    scripts.js 이동하여 상태 관리를 진행하고 재사용하기
+    commonService.js 이동하여 상태 관리를 진행하고 재사용하기
     const handleChange = (e) => {
         const {name, value} = e.target;
         setFormData(p => ({

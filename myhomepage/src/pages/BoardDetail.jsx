@@ -1,8 +1,8 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {fetchBoardDetail, goToPage, renderLoading} from "../service/scripts";
-import {render} from "@testing-library/react";
+import {fetchBoardDetail} from "../service/ApiService";
+import {goToPage, renderLoading} from "../service/commonService";
 
 const BoardDetail = () => {
     const {id} = useParams(); // URL에서 id 값 가져오기
