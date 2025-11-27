@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useContext, useEffect, useState} from "react";
 import {useAuth} from "../context/AuthContext";
-import {handleInputChange} from "../service/commonService";
+import {handleInputChange, renderNoData} from "../service/commonService";
 import {fetchMyPageEdit} from "../service/ApiService";
 import axios from "axios";
 
@@ -42,6 +42,10 @@ document.querySelector("#searchAddress").addEventListener("click",daumPostCode);
 const MyPageEdit = () => {
     const navigate = useNavigate();
     const {user, isAuthenticated} = useAuth();
+    const fileInputRef = useAuth();
+    // Ref -> 페이지 리랜더링이 될 때 현재 데이터를 그대로 유지하기 위해 사용, 
+    // 새로고침이 되어도 초기값으로 돌아가는 것이 아니라 현재 상태를 그대로 유지
+    // 현재 상태로 화면에서 유지
 
     const [formData, setFormData] = useState({
             memberName: '',
@@ -55,6 +59,10 @@ const MyPageEdit = () => {
             confirmPassword: '',
         }
     )
+
+    const [profileImage, setProfileImage] = useState(user?.memberProfileImage || '/img/profile/default-profile.svg');
+    const [profileFile, setProfileFile] = useState(null);
+    const [isUploading, setUploading] = useState(false);
 
     const [validation, setValidation] = useState({
             memberPhone: true,
@@ -229,6 +237,66 @@ const MyPageEdit = () => {
             navigate("/mypage");
         }
     };
+
+    // 프로필 이미지 클릭 시, 파일 선택
+    const handleProfileClick = () => {
+        fileInputRef.current?.click();
+        // 새로 고침하여, 프로필 이미지 초기화 되는 것이 아니라,
+        // 현재 상태를 그대로 유지한 채로 클릭을 진행한다.
+    }
+    // 프로필 이미지 파일 선택
+    const handleProfileChange = async (e) => {
+        const file = e.target.file[0];
+        if(!file) return;
+
+        // 이미지 파일인지 확인, 이미지 파일이 아닌게 맞을 경우
+        if(!file.type.startsWith("image/")) {
+            alert("이미지 파일만 업로드 가능합니다.");
+            return;
+        }
+
+        // 파일 크기 확인 // 요즘은 10mb 정도는 되어야 하지만 일단 5mb
+        if(file.size > 5 * 1024 * 1024) {
+            alert("파일 크기는 5MB 를 초과할 수 없습니다.");
+            return;
+        }
+
+        // 미리보기 표기
+        const render = new FileReader();
+        render.onloadend = (e) => {
+            setProfileImage(e.target.result);
+        };
+        render.readAsDataURL(file);
+        // 파일 저장
+        setProfileFile(file);
+        await uploadProfileImage(file);
+    }
+
+    const uploadProfileImage = async (file) => {
+        setUploading(true);
+        try {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("memberEmail", user.memberEmail);
+            const res = await axios.post('/api/member/prodile-image', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            if(res.data.success = true) {
+                alert("프로필 이미지가 업데이트 되었습니다.");
+                setProfileImage(res.data.imageUrl);
+                // updateUser(useAuth 또한 업데이트 진행)
+            }
+        } catch (error) {
+            alert(error);
+            // 실패 시 원래 이미지로 복구
+            setProfileImage(user?.memberProfileImage || '/static/img/default-profile.svg')
+        } finally {
+            setUploading(false);
+        }
+    }
 
     useEffect(() => {
         if(!isAuthenticated) navigate("/login");
