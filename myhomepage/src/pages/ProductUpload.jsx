@@ -61,7 +61,7 @@ const ProductUpload = () => {
     const validateForm = () => {
         const newErrors = {};
         if(!product.productName.trim()) {
-            newErrors.productName='상품명을 입력하세요.'
+            newErrors.productName='상품명을 입력하세요.';
         }
     }
 
@@ -89,7 +89,7 @@ const ProductUpload = () => {
             console.error("error : ", err);
 
             if(err.r?.data?.message) {
-                alert(err.r.data.messge);
+                alert(err.r.data.message);
             } else {
                 alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
             }

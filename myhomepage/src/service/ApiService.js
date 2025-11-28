@@ -22,6 +22,11 @@ export const API_URLS = {
 /***********************************************************************
  유저 백엔드 관련 함수
  **********************************************************************/
+// 로그인               = fetchLogin -- > auth 로 작성
+// 로그인상태 유무 확인 = fetchLoginCheck (기존에 작성한 이름 존재한다면 기존 이름 그대로 사용)
+
+// 마이페이지 수정      = fetchMypageEdit
+
 /**
  * 회원가입 = fetchSignup
  * @param axios
@@ -68,7 +73,7 @@ export const fetchSignup = async (axios, formData)=> {
 // 로그인 = fetchLogin -> authContext auth로 작성
 
 // 로그인 상태 유무 확인 = fetchLoginCheck (기존에 작성한 이름 존재한다면 기존 이름 그대로 사용) -> 방법2
-/* export const fetchLoginCheck = (axios, setUser, setLoading = null) => {
+export const fetchLoginCheck = (axios, setUser, setLoading = null) => {
     // 로그인 상태 확인 함수 기능 만들기
     axios.get(API_URLS.AUTH +"/check", {
         withCredentials:true })
@@ -83,7 +88,7 @@ export const fetchSignup = async (axios, formData)=> {
         })
         .finally(() => setLoading(false))
 }
-*/
+
 
 // 마이페이지 조회 = fetchMyPage
 // 1. sql 만들기
@@ -120,15 +125,16 @@ export const fetchMyPageEdit = (axios, formData, setIsSubmitting) => {
 }
 
 // 마이페이지 이미지 수정 = fetchMyPageEditWithProfile
-export const fetchMyPageEditWithProfile = (axios, formData, profileFile, setIsSubmitting) => {
+export const fetchMyPageEditWithProfile = (axios, formData, profileFile, navigate, setIsSubmitting) => {
     // 수정 내용 키 : 데이터를 모두 담아갈 변수 이름
     const updateData = {
         memberName: formData.memberName,
         memberEmail: formData.memberEmail,
         memberPhone: formData.memberPhone,
-        memberAddress: formData.memberPostCode + formData.memberAddress + formData.memberDetailAddress,
+        memberAddress: formData.memberAddress + formData.memberDetailAddress,
         newPassword: formData.newPassword || null,
         currentPassword: formData.currentPassword || null,
+        memberProfileImage: profileFile,
     }
 
     try {
@@ -152,9 +158,67 @@ export const fetchMyPageEditWithProfile = (axios, formData, profileFile, setIsSu
     }
 }
 
+// ctrl + shift + f 전체 찾기
+// ctrl + shift + r 파일 이름으로 검색
 
-// ctrl + shift + f
-//ctrl + shift + r
+/***********************************************************************
+ 제품 백엔드 관련 함수
+ **********************************************************************/
+/**
+ * get : 제품 전체 데이터 가져오는 함수
+ * @param axios fetch 향상된 기능으로 백엔드 연결 시 사용
+ * @param setProducts 매개변수에서는 데이터가 존재하지 않은 비어있는 변수 명칭으로, res.data 백엔드 데이터를 ui 컴포넌트로 가져가서 활용하는데 쓰임
+ * @param setLoading 백엔드 데이터를 가져오기 전까지 로딩 중 표기
+ * @returns {Promise<void>} 백엔드 데이터를 제대로 가져왔는지에 대한 유무를 통하여 결과를 반환한다.
+ */
+export const fetchAllProducts = async (axios, setProducts, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.PRODUCT}/all`);
+        setProducts(res.data);
+    } catch (err) {
+        alert("데이터를 가져올 수 없습니다.");
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
+
+/**
+ * get : 제품 일부 데이터 가져오는 함수
+ * @param axios fetch 향상된 기능으로 백엔드 연결 시 사용
+ * @param id url 주소에 표기된 id  = 제품 번호를 이용해서 특정 제품 번호의 전체 데이터를 가져올 수 있도록 활용
+ * @param setProducts 매개변수에서는 데이터가 존재하지 않은 비어있는 변수 명칭으로, res.data 백엔드 데이터를 ui 컴포넌트로 가져가서 활용하는데 쓰임
+ * @param navigate 특정 제품 번호의 제품이 존재하지 않을 경우 제품 목록 페이지로 이동시킨다.
+ * @param setLoading 백엔드 데이터를 가져오기 전까지 로딩 중 표기
+ * @returns {Promise<void>} 백엔드 데이터를 제대로 가져왔는지에 대한 유무를 통하여 결과를 반환한다.
+ */
+export const fetchProductDetail = async (axios, id, setProducts, navigate, setLoading = null) => {
+    try {
+        const res = await axios.get(`${API_URLS.PRODUCT}/${id}`);
+        setProducts(res.data);
+    } catch (err) {
+        alert("상품 정보를 불러올 수 없습니다.");
+        navigate("/products"); // App.js 에서 Route 내부에 작성한 프론트엔드 게시물 전체보는 경로 설정
+    } finally {
+        if(setLoading) setLoading(false);
+    }
+}
+
+/**
+ * get : 일부 제품을 삭제하는 함수
+ * @param axios fetch 향상된 기능으로 백엔드 연결 시 사용
+ * @param id url 주소에 표기된 id  = 제품 번호를 이용해서 특정 제품 번호의 데이터를 삭제할 수 있도록 활용
+ * @param navigate 특정 제품 번호의 제품이 삭제되어 존재하지 않을 경우 제품 목록 페이지로 이동시킨다.
+ * @returns {Promise<void>} 백엔드 동작의 결과를 반환한다.
+ */
+export const deleteProduct = async (axios, id, navigate) => {
+    try {
+        const res = await axios.delete(`${API_URLS.PRODUCT}/${id}`); // NOTE 삭제?
+        alert("상품이 삭제되었습니다.");
+        navigate("/products");
+    }  catch (error) {
+        alert("상품 삭제에 실패했습니다.");
+    }
+}
 
 /***********************************************************************
  게시물 백엔드 관련 함수
@@ -227,7 +291,7 @@ export const boardSave = async (axios, formData, navigate) => {
         const res = await axios.post(`${API_URLS.BOARD}`, formData);
         alert("글이 성공적으로 작성되었습니다.");
         navigate("/board");
-        return res.data;
+        return res;
     } catch (error) {
         alert("글 작성 중 문제가 발생했습니다.");
         console.log(error);
@@ -235,62 +299,3 @@ export const boardSave = async (axios, formData, navigate) => {
     }
 }
 
-
-/***********************************************************************
- 제품 백엔드 관련 함수
- **********************************************************************/
-/**
- * get : 제품 전체 데이터 가져오는 함수
- * @param axios fetch 향상된 기능으로 백엔드 연결 시 사용
- * @param setProducts 매개변수에서는 데이터가 존재하지 않은 비어있는 변수 명칭으로, res.data 백엔드 데이터를 ui 컴포넌트로 가져가서 활용하는데 쓰임
- * @param setLoading 백엔드 데이터를 가져오기 전까지 로딩 중 표기
- * @returns {Promise<void>} 백엔드 데이터를 제대로 가져왔는지에 대한 유무를 통하여 결과를 반환한다.
- */
-export const fetchAllProducts = async (axios, setProducts, setLoading = null) => {
-    try {
-        const res = await axios.get(`${API_URLS.PRODUCT}/all`);
-        setProducts(res.data);
-    } catch (err) {
-        alert("데이터를 가져올 수 없습니다.");
-    } finally {
-        if(setLoading) setLoading(false);
-    }
-}
-
-/**
- * get : 제품 일부 데이터 가져오는 함수
- * @param axios fetch 향상된 기능으로 백엔드 연결 시 사용
- * @param id url 주소에 표기된 id  = 제품 번호를 이용해서 특정 제품 번호의 전체 데이터를 가져올 수 있도록 활용
- * @param setProducts 매개변수에서는 데이터가 존재하지 않은 비어있는 변수 명칭으로, res.data 백엔드 데이터를 ui 컴포넌트로 가져가서 활용하는데 쓰임
- * @param navigate 특정 제품 번호의 제품이 존재하지 않을 경우 제품 목록 페이지로 이동시킨다.
- * @param setLoading 백엔드 데이터를 가져오기 전까지 로딩 중 표기
- * @returns {Promise<void>} 백엔드 데이터를 제대로 가져왔는지에 대한 유무를 통하여 결과를 반환한다.
- */
-export const fetchProductDetail = async (axios, id, setProducts, navigate, setLoading = null) => {
-    try {
-        const res = await axios.get(`${API_URLS.RPODUCT}/${id}`);
-        setProducts(res.data);
-    } catch (err) {
-        alert("상품 정보를 불러올 수 없습니다.");
-        navigate("/products"); // App.js 에서 Route 내부에 작성한 프론트엔드 게시물 전체보는 경로 설정
-    } finally {
-        if(setLoading) setLoading(false);
-    }
-}
-
-/**
- * get : 일부 제품을 삭제하는 함수
- * @param axios fetch 향상된 기능으로 백엔드 연결 시 사용
- * @param id url 주소에 표기된 id  = 제품 번호를 이용해서 특정 제품 번호의 데이터를 삭제할 수 있도록 활용
- * @param navigate 특정 제품 번호의 제품이 삭제되어 존재하지 않을 경우 제품 목록 페이지로 이동시킨다.
- * @returns {Promise<void>} 백엔드 동작의 결과를 반환한다.
- */
-export const deleteProduct = async (axios, id, navigate) => {
-    try {
-        const res = await axios.delete(`${API_URLS.PRODUCT}/${id}`); // NOTE 삭제?
-        alert("상품이 삭제되었습니다.");
-        navigate("/products");
-    }  catch (error) {
-        alert("상품 삭제에 실패했습니다.");
-    }
-}

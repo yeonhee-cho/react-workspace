@@ -1,5 +1,5 @@
 // 메인 페이지 (인기글)
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {fetchAllPopularBoards, fetchAllProducts} from "../service/ApiService";
@@ -12,7 +12,7 @@ const Main = () => {
 
     // console.log 로  res.data 데이터를 조회 F12
     useEffect( () =>{
-        fetchAllProducts(axios,setProducts, setLoading);
+        fetchAllProducts(axios, setProducts, setLoading);
         fetchAllPopularBoards(axios, setBoards, setLoading);
     },[]);
     /*

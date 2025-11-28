@@ -14,7 +14,7 @@ const Products = () => {
     const [selectCategory, setSelectCategory] = useState('전체');
     const [searchKeyword, setSearchKeyword] = useState('');
 
-    const categories = ["전체", "전자기기", "의류", "식품", "도서", "생확용품", "기타"];
+    const categories = ["전체", "전자기기", "의류", "식품", "도서", "생활용품", "기타"];
 
     useEffect(() => {
         fetchAllProducts(axios, setProducts, setLoading);
@@ -38,7 +38,7 @@ const Products = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        filterProducts()
+        filterProducts();
     }
 
     /*
@@ -51,23 +51,12 @@ const Products = () => {
         goToPage(navigate, `/product/${id}`)
     }
 
-    if (loading) {
-        return (
-            <div className="page-container">
-                <div className="loading-container">
-                    <div className="loading-spinner">
-                    </div>
-                    <p>로딩 중</p>
-                </div>
-            </div>
-        );
-    }
     return (
         <div className="page-container product-list-container">
             <div className="product-header">
                 <h2>상품 목록</h2>
                 <button className="btn-add-product"
-                        onClick={() => navigate(`/product/upload`)}>
+                        onClick={() => navigate(`/upload`)}>
                     + 상품 등록
                 </button>
             </div>
@@ -93,11 +82,11 @@ const Products = () => {
 
             {/*상품 개수*/}
             <div className="product-count">
-                총 <strong> {filterProducts.length} </strong>개의 상품
+                총 <strong> {filterProduct.length} </strong>개의 상품
             </div>
 
             {/*상품 목록*/}
-            {filterProducts.length > 0 ? (
+            {filterProduct.length > 0 ? (
                 <div className="product-grid">
                     {filterProduct.map((product) => (
                         <div key={product.id}

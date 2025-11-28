@@ -2,7 +2,7 @@ import {data, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import axios from "axios";
 import {fetchProductDetail, deleteProduct} from "../service/ApiService";
-import {renderLoading} from "../service/commonService";
+import {formatDate, formatPrice, renderLoading} from "../service/commonService";
 
 /*
 * TODO
@@ -16,20 +16,21 @@ const ProductDetail = () => {
     const {id} = useParams(); // url에서 id 가져오기
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
-    const [loading, setLoding] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetchProductDetail(axios, id, setProduct, navigate, setLoding);
+        fetchProductDetail(axios, id, setProduct, navigate, setLoading);
     }, [id]); // id 값이 조회될 때마다 상품 상세보기 데이터 조회
 
     // 삭제 버튼에 직접적으로 기능을 작성할 수 있지만
     // ui 와 js 환경을 구분하기 위하여 handleDelete 기능 명칭으로 삭제 상태 관리를 진행한다.
     const handleDelete = async () => {
         if(window.confirm("정말 삭제하시겠습니까?")) {
-            await deleteProduct(axios, id, navigate());
+            await deleteProduct(axios, id, navigate);
         }
     }
 
+    /*
     const formatDate = (dateString) => {
         if(!dateString) return '-';
         const date = new Date(dateString);
@@ -43,12 +44,13 @@ const ProductDetail = () => {
     const formatPrice = (price) => {
         return new Intl.NumberFormat("ko-KR").format(price);
     }
+    */
 
     if(loading) {
-        return renderLoading("게시물을 불러오는 중입니다.");
+        return renderLoading("상품을 불러오는 중입니다.");
     }
     if(!product) {
-        return renderLoading("게시물을 찾을 수 없습니다.")
+        return renderLoading("상품을 찾을 수 없습니다.'")
     }
     return(
         <div className="page-container">
@@ -86,17 +88,25 @@ const ProductDetail = () => {
                     </div>
                     <div className="meta-item">
                         <span className="meta-label">재고</span>
-                        <span className={`meta-value ${product.stockQuantity < 10 ? "low-stock":""}`}>{product.stockQuantity < 10 ? "매진 임박":product.stockQuantity + "개"}</span>
+                        <span className={`meta-value ${product.stockQuantity < 10 ? "low-stock":""}`}>
+                            {product.stockQuantity < 10 ? "매진 임박":product.stockQuantity + "개"}
+                        </span>
                     </div>
                     <div className="meta-item">
                         <span className="meta-label">판매상태</span>
                         {/* mysql 은 boolean 데이터로 가능, oracle char 로 변경 확인하기 */}
                         <span className="meta-value">
-                            {/* TODO!!
+                            {/* mysql 은 boolean 데이터로 가능, oracle char 로 변경 확인하기
 
-
-                             데이터가 'Y'가 맞을 경우에만 판매중으로 표기할 것이다.
-                             */}
+                            product.isActive : Y
+                            ProductDetail.jsx:87 product.isActive : Y
+                            {product.isActive ? '판매중'  : '판매중지'} 상태는
+                             product.isActive가 'N' 이어도 값 존재 유무만 확인한 상태에서
+                             값이 존재하면  true 가 발생하는 상황이기 때문에
+                             판매중지임에도 판매중으로 표기됨
+                            {product.isActive ? '판매중'  : '판매중지'}
+                            데이터가 'Y' 가 맞을 경우에만 판매중으로 표기할 것이다.
+                            */}
                             {console.log('product.isActive : ', product.isActive)}
                             {product.isActive === 'Y' ? "판매중" : "판매중지"}</span>
                     </div>

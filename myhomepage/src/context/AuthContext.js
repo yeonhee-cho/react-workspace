@@ -66,9 +66,9 @@ const AuthProvider = ({children}) => {
                 res => {
                     console.log("res.data      : " + res.data);
                     console.log("res.data.user : " + res.data.user);
-                // 2. 요청 성공(200 ~ 299)
-                // 서버가 응답을 성공적으로 보냈을 때 실행
-                // setUser(res.data); // 로그인 성공 시 사용자 정보 저장
+                    // 2. 요청 성공(200 ~ 299)
+                    // 서버가 응답을 성공적으로 보냈을 때 실행
+                    // setUser(res.data); // 로그인 성공 시 사용자 정보 저장
                     if(res.data.success && res.data.user) {
                         setUser(res.data.user);
                         return{
