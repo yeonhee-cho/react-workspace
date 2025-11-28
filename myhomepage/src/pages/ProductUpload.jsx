@@ -3,6 +3,9 @@ import {useState} from "react";
 import axios from "axios";
 import {handleInputChange} from "../service/commonService";
 
+// 상품 이미지 업로드 변경
+// profileImage -> imageUrl 을 이용해서 상품 업로드 시 제품 미리보기
+
 const ProductUpload = () => {
     const navigate = useNavigate();
     const [loading, setLoding] = useState(false);
@@ -16,7 +19,6 @@ const ProductUpload = () => {
         manufacturer:'',
         imageUrl:'',
     });
-
     const [errors, setErrors] = useState({});
 
     const categories = [
@@ -76,7 +78,8 @@ const ProductUpload = () => {
 
         // 백엔드 연결 시도
         try {
-            const r = await axios.post('http://localhost:8085/api/product', product);
+            const r = await axios.post(
+                'http://localhost:8085/api/product', product);
             if(r.data.success) {
                 alert(r.data.message);
                 navigate("/");
