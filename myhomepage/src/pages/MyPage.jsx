@@ -57,7 +57,8 @@ const MyPage = () => {
                                 width: '100px',
                                 height: '100px',
                             }}>
-                                <img src={user.memberProfileImage}  style={{
+                                {/*이미지 경로는 존재하지만 이미지 경로에 이미지가 존재하지 않을 경우*/}
+                                <img src={user?.memberProfileImage || '/static/img/profile/default-profile.svg'}  style={{
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'cover'

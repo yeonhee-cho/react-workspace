@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../context/AuthContext";
 import {handleInputChange} from "../service/commonService";
-import {fetchMyPageEdit} from "../service/ApiService";
+import {fetchMyPageEdit, fetchMyPageEditWithProfile} from "../service/ApiService";
 import axios from "axios";
 
 /* TODO 새로 작성한 비밀번호와 비밀번호 확인이 일치하는지 여부 기능 완성
@@ -162,6 +162,7 @@ const MyPageEdit = () => {
         }, 1000);
         */
         fetchMyPageEdit(axios, formData, navigate, setIsSubmitting);
+        fetchMyPageEditWithProfile(axios, formData, profileFile, navigate, setIsSubmitting);
     }
 
     /*
@@ -270,12 +271,20 @@ const MyPageEdit = () => {
                 setProfileImage(res.data.imageUrl);
                 //updateUser(useAuth 또한 업데이트 진행)
 
-                // AuthContext user 정보도 업데이트
-                if(updateUser) {
-                    updateUser({
-                        ...user, memberProfileImage : res.data.imageUrl
-                    })
+                // 세션에서 최신 사용자 정보 가져오기
+                const sessionRes = await axios.get("/api/auth/check", {
+                    withCredentials:true
+                })
+
+                if(sessionRes.data.user) {
+                    updateUser(sessionRes.data.user); // 전역 user 상태 업데이트
                 }
+                // // AuthContext user 정보도 업데이트
+                // if(updateUser) {
+                //     updateUser({
+                //         ...user, memberProfileImage : res.data.imageUrl
+                //     })
+                // }
             }
         } catch (error) {
             alert(error);

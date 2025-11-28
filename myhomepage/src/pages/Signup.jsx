@@ -2,12 +2,14 @@ import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {fetchSignup} from "../service/ApiService";
 import {handleInputChange} from "../service/commonService";
+import {useAuth} from "../context/AuthContext";
 
 /*
 * TODO
 * 1. Mypage 에서 정보 수정 들어가지 않고, 프로필 이미지 보여주기
 * 2. Mypage 에서 수정하기 버튼을 눌렀을 때도 프로필 이미지 수정 반영 저장하기
-* 3. 회원가입 할 때 프로필 이미지 선택 여부 / 선택 안 할 경우 기본 이미지로 회원가입되게 설정*/
+* 3. 회원가입 할 때 프로필 이미지 선택 여부 / 선택 안 할 경우 기본 이미지로 회원가입되게 설정
+* */
 // 회원가입
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -15,7 +17,8 @@ const Signup = () => {
         memberEmail:'',
         memberPw:'',
         memberPwConfirm:'',
-        authKey:''
+        authKey:'',
+        memberProfileImage:'',
         /* 집주소, 전화번호 추가 예정 */
     });
     // 클라이언트가 회사가 원하는 방향으로 정보를 작성하지 않았을 경우 띄워주는 메세지 초기 표기
@@ -38,6 +41,74 @@ const Signup = () => {
         active: false
     });
     const timerRef = useRef(null);
+
+    /* 이미지 업로드 */
+    const {user, updateUser} = useAuth();
+
+    const [profileImage, setProfileImage] = useState('/static/img/profile/default-profile.svg');
+    const [profileFile, setProfileFile] = useState(null);
+    const [isUploading, setUploading] = useState(false);
+    const fileInputRef = useRef(null);
+
+    // 프로필 이미지 클릭 시, 파일 선택
+    const handleProfileClick = () => {
+        fileInputRef.current?.click();
+    }
+
+    // 프로필 이미지 파일 선택
+    const handleProfileChange = async (e) => {
+        const file = e.target.files[0];
+        if(!file) return;
+
+        // 이미지 파일인지 확인, 이미지 파일이 아닌게 맞을 경우
+        if(!file.type.startsWith("image/")){
+            alert("이미지 파일만 업로드 가능합니다.");
+            return;
+        }
+
+        // 파일 크기 확인 // 요즘은 10mb 정도는 되어야 하지만 일단 5mb
+        if(file.size > 5 * 1024 * 1024) {
+            alert("파일 크기는 5MB 를 초과할 수 없습니다.");
+            return;
+        }
+
+        // 미리보기 표기
+        const reader = new FileReader();
+        reader.onloadend = (e) => {
+            setProfileImage(e.target.result);
+        };
+        reader.readAsDataURL(file);
+        // 파일 저장
+        setProfileFile(file);
+        await uploadProfileImage(file);
+
+    }
+
+    const uploadProfileImage = async (file) => {
+        setUploading(true);
+        try {
+            const uploadFormData = new FormData();
+            uploadFormData.append("file", file);
+            const res = await  axios.post('/api/auth/profile-image', uploadFormData, {
+                headers: {
+                    'Content-Type':'multipart/form-data'
+                }
+            });
+
+            if(res.data.success === true) {
+                alert("프로필 이미지가 업데이트 되었습니다.");
+                setProfileImage(res.data.imageUrl);
+                setFormData(prev => ({ ...prev, memberProfileImage: res.data.imageUrl })); // formData에 URL 저장
+            }
+        } catch (error) {
+            alert(error);
+            // 실패 시 원래 이미지로 복구
+            setProfileImage('/static/img/profile/default-profile.svg');
+        } finally {
+            setUploading(false);
+        }
+    }
+    /* 이미지 업로드 */
 
     // 초의 경우 지속적으로 1초마다 시간을 줄이고, 0분 0초일 경우 인증 실패 처리
     // 3분 00초 일 경우 59초 부터 다시 시작하도록 세팅
@@ -238,9 +309,28 @@ const Signup = () => {
     const handleChange = (e) => {
         handleInputChange(e, setFormData);
     }
+
     return (
         <div className="page-container">
             <form onSubmit={handleSubmit}>
+                <div className="profile-image-section">
+                    <label>프로필 이미지</label>
+                    <div className="profile-image-container" onClick={handleProfileClick}>
+                        <img src={profileImage}
+                             className="profile-image"
+                        />
+                        <div className="profile-image-overlay">
+                            {isUploading ? "업로드 중..." : '이미지 변경'}
+                        </div>
+                    </div>
+                    <input type="file" ref={fileInputRef}
+                           onChange={handleProfileChange}
+                           accept="image/*"
+                           style={{ display: 'none' }}
+                    />
+                    <span className="form-hint">이미지를 클릭하여 변경할 수 있습니다.(최대 5MB)</span>
+                </div>
+
                 <label htmlFor="memberEmail">
                     <span className="required">*</span> 아이디(이메일)
                 </label>
