@@ -41,12 +41,14 @@ document.querySelector("#searchAddress").addEventListener("click",daumPostCode);
 * */
 const MyPageEdit = () => {
     const navigate = useNavigate();
-    const {user, isAuthenticated} = useAuth();
-    const fileInputRef = useRef(null);
-    // Ref -> 페이지 리랜더링이 될 때 현재 데이터를 그대로 유지하기 위해 사용, 
+    const {user, isAuthenticated, updateUser} = useAuth();
+    // Ref -> 페이지 리랜더링이 될 때 현재 데이터를 그대로 유지하기 위해 사용,
     // 새로고침이 되어도 초기값으로 돌아가는 것이 아니라 현재 상태를 그대로 유지
     // 현재 상태로 화면에서 유지
-
+    const fileInputRef = useRef(null);
+    useEffect(() => {
+        if(!isAuthenticated) navigate("/login");
+    }, []);
     const [formData, setFormData] = useState({
             memberName: '',
             memberEmail: '',
@@ -63,21 +65,18 @@ const MyPageEdit = () => {
     const [profileImage, setProfileImage] = useState(user?.memberProfileImage || '/static/img/profile/default-profile.svg');
     const [profileFile, setProfileFile] = useState(null);
     const [isUploading, setUploading] = useState(false);
-
     const [validation, setValidation] = useState({
             memberPhone: true,
             newPassword: true,
             confirmPassword: true,
         }
     )
-
     const [messages, setMessages] = useState({
         memberPhone: '',
         newPassword: '',
         confirmPassword: '',
         }
     )
-
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     // set 해서 값을 추가하면서 추가된 값이 일치하는가 확인
@@ -132,7 +131,7 @@ const MyPageEdit = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
-        // 단순히 값이 존재하는 지 확인 값이 존재하는지 확인
+        // 단순히 값이 존재하는 지 확인 값이 존재하는지 확인, 존재하면 ok
         if(formData.currentPassword || formData.newPassword || formData.confirmPassword) {
             if(!formData.currentPassword) {
                 alert("현재 비밀번호를 입력해주세요.");
@@ -145,26 +144,8 @@ const MyPageEdit = () => {
                 return;
             }
 
-            if(!validation.newPassword) {
+            if(!validation.confirmPassword) {
                 alert("비밀번호 확인를 입력해주세요.");
-                return;
-            }
-        }
-
-        if(formData.currentPassword || formData.newPassword || formData.confirmPassword) {
-            if(!formData.currentPassword) {
-                alert("현재 비밀번호를 입력해주세요.");
-                return;
-            }
-
-            if(!formData.newPassword) {
-
-                alert("비밀번호 형식이 올바르지 않습니다.");
-                return;
-            }
-
-            if(formData.newPassword === formData.confirmPassword) {
-                alert("비밀번호가 일치하지 않습니다.");
                 return;
             }
         }
@@ -180,8 +161,7 @@ const MyPageEdit = () => {
             navigate("/mypage");
         }, 1000);
         */
-
-        fetchMyPageEdit(axios, formData, setIsSubmitting);
+        fetchMyPageEdit(axios, formData, navigate, setIsSubmitting);
     }
 
     /*
@@ -270,15 +250,16 @@ const MyPageEdit = () => {
         // 파일 저장
         setProfileFile(file);
         await uploadProfileImage(file);
+
     }
 
     const uploadProfileImage = async (file) => {
         setUploading(true);
         try {
-            const formData = new FormData();
-            formData.append("file", file);
-            formData.append("memberEmail", user.memberEmail);
-            const res = await  axios.post('/api/auth/profile-image', formData, {
+            const uploadFormData = new FormData();
+            uploadFormData.append("file", file);
+            uploadFormData.append("memberEmail", user.memberEmail);
+            const res = await  axios.post('/api/auth/profile-image', uploadFormData, {
                 headers: {
                     'Content-Type':'multipart/form-data'
                 }
@@ -287,17 +268,14 @@ const MyPageEdit = () => {
             if(res.data.success === true) {
                 alert("프로필 이미지가 업데이트 되었습니다.");
                 setProfileImage(res.data.imageUrl);
-
                 //updateUser(useAuth 또한 업데이트 진행)
 
-                /*
                 // AuthContext user 정보도 업데이트
                 if(updateUser) {
                     updateUser({
                         ...user, memberProfileImage : res.data.imageUrl
                     })
                 }
-                */
             }
         } catch (error) {
             alert(error);
@@ -307,10 +285,6 @@ const MyPageEdit = () => {
             setUploading(false);
         }
     }
-
-    useEffect(() => {
-        if(!isAuthenticated) navigate("/login");
-    }, []);
 
     return (
         <div className="page-container">
@@ -330,6 +304,7 @@ const MyPageEdit = () => {
                            onChange={handleProfileChange}
                            accept="image/*"
                            style={{ display: 'none' }}
+                           multiple
                     />
                     <span className="form-hint">이미지를 클릭하여 변경할 수 있습니다.(최대 5MB)</span>
                 </div>

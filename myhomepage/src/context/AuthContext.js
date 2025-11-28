@@ -105,14 +105,20 @@ const AuthProvider = ({children}) => {
                 return {success: false};
             });
     }
+
+    const updateUser = (newUser) => {
+        setUser(newUser);
+    };
+
     // Context에 제공할 값 들
     const value = {
         user, // 현재 로그인 한 사용자 정보
         loading,  // 로딩 상태
         loginFn, // 로그인 함수
         logoutFn, // 로그아웃 함수
-        // isAuthenticated:!user // 로그인 여부(true/false) 제공될 것
-        isAuthenticated:!!user // 로그인 여부(true/false) 제공될 것
+        // isAuthenticated:!user, // 로그인 여부(true/false) 제공될 것
+        isAuthenticated:!!user, // 로그인 여부(true/false) 제공될 것
+        updateUser
     };
 
     return (

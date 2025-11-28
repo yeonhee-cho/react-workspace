@@ -52,6 +52,20 @@ const MyPage = () => {
 
                     <div className="info-group">
                         <div className="info-item">
+                            <span className="info-label">프로필 이미지</span>
+                            <div style={{
+                                width: '100px',
+                                height: '100px',
+                            }}>
+                                <img src={user.memberProfileImage}  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover'
+                                }}/>
+                            </div>
+                        </div>
+
+                        <div className="info-item">
                             <span className="info-label">이메일</span>
                             <span className="info-value">{user.memberEmail || '-'}</span>
                         </div>
