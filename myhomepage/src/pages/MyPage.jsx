@@ -42,6 +42,21 @@ const MyPage = () => {
         navigate("/mypage/edit");
     }
 
+    // 이미지 url 생성 함수
+    const getProfileImageUrl = () => {
+        if(!user?.memberProfileImage) return '/static/img/profile/default_profile_image.svg';
+
+        // memberProfileImage 가 전체 URL 인 경우
+        if(user.memberProfileImage.startsWith('http')) return user.memberProfileImage;
+
+        if(user.memberProfileImage.startsWith('/profile_images/')) {
+            return `http://localhost:8085${user.memberProfileImage}`;
+        }
+
+        // 파일 명만 있는 경우
+        return `http://localhost:8085/profile_images/${user.memberProfileImage}`;
+    }
+
     return (
         <div className="page-container">
             <h1>마이페이지</h1>
@@ -58,7 +73,7 @@ const MyPage = () => {
                                 height: '100px',
                             }}>
                                 {/*이미지 경로는 존재하지만 이미지 경로에 이미지가 존재하지 않을 경우*/}
-                                <img src={user?.memberProfileImage || '/static/img/profile/default-profile.svg'}  style={{
+                                <img src={getProfileImageUrl() || '/static/img/profile/default-profile.svg'}  style={{
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'cover'
