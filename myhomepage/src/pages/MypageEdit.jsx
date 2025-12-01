@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import {useAuth} from "../context/AuthContext";
 import {handleInputChange} from "../service/commonService";
-import {fetchMyPageEdit, fetchMyPageEditWithProfile} from "../service/ApiService";
+import {fetchMyPageEdit, fetchMyPageEditWithProfile, getProfileImageUrl} from "../service/ApiService";
 import axios from "axios";
 
 /* TODO 새로 작성한 비밀번호와 비밀번호 확인이 일치하는지 여부 기능 완성
@@ -41,28 +41,27 @@ document.querySelector("#searchAddress").addEventListener("click",daumPostCode);
 * */
 const MyPageEdit = () => {
     const navigate = useNavigate();
-    const {user, isAuthenticated, updateUser} = useAuth();
+    const {user, isAuthenticated, updateUser, loading} = useAuth();
+    console.log("user", user);
     // Ref -> 페이지 리랜더링이 될 때 현재 데이터를 그대로 유지하기 위해 사용,
     // 새로고침이 되어도 초기값으로 돌아가는 것이 아니라 현재 상태를 그대로 유지
     // 현재 상태로 화면에서 유지
     const fileInputRef = useRef(null);
-    useEffect(() => {
-        if(!isAuthenticated) navigate("/login");
-    }, []);
+
     const [formData, setFormData] = useState({
             memberName: '',
             memberEmail: '',
             memberPhone: '',
-            memberPostCode: '',
+            // memberPostCode: '',
             memberAddress: '',
-            memberDetailAddress: '',
+            // memberDetailAddress: '',
             newPassword: '',
             currentPassword: '',
             confirmPassword: '',
         }
-    )
+    );
 
-    const [profileImage, setProfileImage] = useState(user?.memberProfileImage || '/static/img/profile/default-profile.svg');
+    const [profileImage, setProfileImage] = useState(''); // user?.memberProfileImage || '/static/img/profile/default-profile.svg'
     const [profileFile, setProfileFile] = useState(null);
     const [isUploading, setUploading] = useState(false);
     const [validation, setValidation] = useState({
@@ -70,14 +69,37 @@ const MyPageEdit = () => {
             newPassword: true,
             confirmPassword: true,
         }
-    )
+    );
     const [messages, setMessages] = useState({
-        memberPhone: '',
-        newPassword: '',
-        confirmPassword: '',
+            memberPhone: '',
+            newPassword: '',
+            confirmPassword: '',
         }
-    )
+    );
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    useEffect(() => {
+        if(!loading && !isAuthenticated) navigate("/login");
+    }, [loading, isAuthenticated, navigate]);
+
+    useEffect(() => {
+         if(user) {
+                setFormData(prev => ({
+                    ...prev,
+                    memberName: user.memberName || '',
+                    memberEmail: user.memberEmail || '',
+                    memberPhone: user.memberPhone || '',
+
+                    // memberPostCode: user.memberPostCode || '',
+                    // memberAddress: user.memberAddress || '',
+                    // memberDetailAddress: user.memberDetailAddress || '',
+
+                    memberAddress: user.memberAddress || ''
+                }));
+                // 프로필 이미지 설정
+                setProfileImage(getProfileImageUrl(user));
+         }
+    },[user?.memberEmail]); // user가 memberEmail 이 변경될 때만 실행
 
     // set 해서 값을 추가하면서 추가된 값이 일치하는가 확인
     // handleInputChange 내부에 formData 활용

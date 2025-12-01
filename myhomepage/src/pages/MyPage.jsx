@@ -4,6 +4,7 @@ import {useContext, useEffect} from "react";
 //         export = {useAuth} 사용할 수 있다.
 import AuthContext, {useAuth} from "../context/AuthContext";
 import {renderLoading} from "../service/commonService";
+import {getProfileImageUrl} from "../service/ApiService";
 // 마이페이지
 /*
 * 로그인 상태일 때만 접근 가능
@@ -19,8 +20,8 @@ const MyPage = () => {
     // 1. useEffect 활용해서 로그인 상태가 아닐 경우 navigate("/login") 처리
     useEffect(() => {
         // 로딩 중이 종료되었고, 백엔드에서 로그인한 결과가 존재하지 않는 게 맞다면
-        if(!isAuthenticated) navigate("/login");
-    }, [isAuthenticated, navigate]);
+        if(!loading && !isAuthenticated) navigate("/login");
+    }, [loading, isAuthenticated, navigate]);
 
     // 2. page-container 를 삼항연산자 형태로 감싸서 처리
     // BoardWrite 참조 {is Authenticated : (
@@ -42,21 +43,6 @@ const MyPage = () => {
         navigate("/mypage/edit");
     }
 
-    // 이미지 url 생성 함수
-    const getProfileImageUrl = () => {
-        if(!user?.memberProfileImage) return '/static/img/profile/default_profile_image.svg';
-
-        // memberProfileImage 가 전체 URL 인 경우
-        if(user.memberProfileImage.startsWith('http')) return user.memberProfileImage;
-
-        if(user.memberProfileImage.startsWith('/profile_images/')) {
-            return `http://localhost:8085${user.memberProfileImage}`;
-        }
-
-        // 파일 명만 있는 경우
-        return `http://localhost:8085/profile_images/${user.memberProfileImage}`;
-    }
-
     return (
         <div className="page-container">
             <h1>마이페이지</h1>
@@ -73,7 +59,7 @@ const MyPage = () => {
                                 height: '100px',
                             }}>
                                 {/*이미지 경로는 존재하지만 이미지 경로에 이미지가 존재하지 않을 경우*/}
-                                <img src={getProfileImageUrl() || '/static/img/profile/default-profile.svg'}  style={{
+                                <img src={getProfileImageUrl(user) || '/static/img/profile/default-profile.svg'}  style={{
                                     width: '100%',
                                     height: '100%',
                                     objectFit: 'cover'

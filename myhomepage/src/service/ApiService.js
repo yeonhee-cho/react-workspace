@@ -10,6 +10,8 @@
 * */
 import axios from "axios";
 
+axios.defaults.withCredentials = true;
+
 const API_URL = 'http://localhost:8085'
 
 export const API_URLS = {
@@ -33,7 +35,7 @@ export const API_URLS = {
  * @param formData
  * @returns {Promise<void>}
  */
-export const fetchSignup = async (axios, formData)=> {
+export const fetchSignup = async (axios, formData, profileImage)=> {
     // 필수 항목 체크
     if(!formData.memberName) {
         alert("이름을 입력해주세요.");
@@ -51,8 +53,16 @@ export const fetchSignup = async (axios, formData)=> {
         memberPassword: formData.memberPw,
     }
 
+    if(profileImage) {
+        signupData.append('profileImage', profileImage);
+    }
+
     try {
-        const res = await axios.post( API_URLS.AUTH + "/signup", signupData);
+        const res = await axios.post( API_URLS.AUTH + "/signup", signupData, {
+            headers: {
+                'Content-Type' : 'multipart/form-data'
+            }
+        });
         if(res.data === "success" || res.status === 200) {
             console.log("res.status : ", res.status);
             console.log("res.data : ", res.data);
@@ -73,9 +83,9 @@ export const fetchSignup = async (axios, formData)=> {
 // 로그인 = fetchLogin -> authContext auth로 작성
 
 // 로그인 상태 유무 확인 = fetchLoginCheck (기존에 작성한 이름 존재한다면 기존 이름 그대로 사용) -> 방법2
-export const fetchLoginCheck = (axios, setUser, setLoading = null) => {
+export const fetchLoginCheck = async (axios, setUser, setLoading = null) => {
     // 로그인 상태 확인 함수 기능 만들기
-    axios.get(API_URLS.AUTH +"/check", {
+    await axios.get(API_URLS.AUTH +"/check", {
         withCredentials:true })
         .then(res => {
             // console.log("로그인 상태 확인 응답 : ", res.data);
@@ -95,26 +105,31 @@ export const fetchLoginCheck = (axios, setUser, setLoading = null) => {
 // 2. serviceimpl service.... 안해도 됨
 
 // 마이페이지 수정 = fetchMyPageEdit
-export const fetchMyPageEdit = (axios, formData, setIsSubmitting) => {
+export const fetchMyPageEdit = async (axios, formData, setIsSubmitting) => {
     // 수정 내용 키 : 데이터를 모두 담아갈 변수 이름
     const updateData = {
         memberName: formData.memberName,
         memberEmail: formData.memberEmail,
         memberPhone: formData.memberPhone,
         memberAddress: formData.memberPostCode + formData.memberAddress + formData.memberDetailAddress,
+        // memberPostCode: formData.memberPostCode,
+        // memberAddress: formData.memberAddress,
+        // memberDetailAddress: formData.memberDetailAddress,
         newPassword: formData.newPassword || null,
         currentPassword: formData.currentPassword || null,
     }
 
     try {
-        const res = axios.put(API_URLS.AUTH + "/update", updateData, {
+        const res = await axios.put(API_URLS.AUTH + "/update", updateData, {
             withCredentials: true
         });
-            if (res.data === "success" || res.status === 200) {
+            if (res.data.success === true) {
                 alert("회원정보가 수정되었습니다.");
-            } else if (res.data === "wrongPassword") {
-                alert("현재 비밀번호가 일치하지 않습니다.");
-            } else {
+            }
+            // else if (res.data.message === "wrongPassword") {
+            //     alert("현재 비밀번호가 일치하지 않습니다.");
+            // }
+            else {
                 alert("회원정보 수정에 실패했습니다.");
             }
     } catch (e) {
@@ -125,30 +140,35 @@ export const fetchMyPageEdit = (axios, formData, setIsSubmitting) => {
 }
 
 // 마이페이지 이미지 수정 = fetchMyPageEditWithProfile
-export const fetchMyPageEditWithProfile = (axios, formData, profileFile, navigate, setIsSubmitting) => {
+export const fetchMyPageEditWithProfile = async (axios, formData, profileFile, navigate, setIsSubmitting) => {
     // 수정 내용 키 : 데이터를 모두 담아갈 변수 이름
     const updateData = {
         memberName: formData.memberName,
         memberEmail: formData.memberEmail,
         memberPhone: formData.memberPhone,
-        memberAddress: formData.memberAddress + formData.memberDetailAddress,
+        // memberPostCode: formData.memberPostCode,
+        memberAddress: formData.memberAddress,
+        // memberDetailAddress: formData.memberDetailAddress,
         newPassword: formData.newPassword || null,
         currentPassword: formData.currentPassword || null,
         memberProfileImage: profileFile,
     }
 
     try {
-        const res = axios.put(API_URLS.AUTH + "/update", updateData, {
+        const res = await axios.put(API_URLS.AUTH + "/update", updateData, {
             headers: {
                 'Content-Type':'multipart/form-data'
             },
             withCredentials: true
         });
-        if (res.data === "success" || res.status === 200) {
+        if (res.data.success === true) {
             alert("회원정보가 수정되었습니다.");
-        } else if (res.data === "wrongPassword") {
+        } else if (res.data.success === false) {
             alert("현재 비밀번호가 일치하지 않습니다.");
         } else {
+            // 콘솔데이터를 찍었는데 res.data 나오지 않는다는 것은 결과를 불러오기 전에 자바스크립트에서 실행이 먼저 되어서 이다.
+            // 이때는 async await
+            // console.log("res.data", res.data)
             alert("회원정보 수정에 실패했습니다.");
         }
     } catch (e) {
@@ -299,3 +319,17 @@ export const boardSave = async (axios, formData, navigate) => {
     }
 }
 
+// 이미지 url 생성 함수
+export const getProfileImageUrl = (user) => {
+    if(!user?.memberProfileImage) return '/static/img/profile/default-profile.svg';
+
+    // memberProfileImage 가 전체 URL 인 경우
+    if(user.memberProfileImage.startsWith('http')) return user.memberProfileImage;
+
+    if(user.memberProfileImage.startsWith('/profile_images/')) {
+        return `${API_URL}${user.memberProfileImage}`;
+    }
+
+    // 파일 명만 있는 경우
+    return `${API_URL}/profile_images/${user.memberProfileImage}`;
+}

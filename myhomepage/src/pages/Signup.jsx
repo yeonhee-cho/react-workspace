@@ -40,75 +40,13 @@ const Signup = () => {
         sec: 59,
         active: false
     });
+    /* 이미지 업로드 */
+    const [profileImage, setProfileImage] = useState(null);
+    const [profilePreview, setProfilePreview] = useState("/static/img/profile/default-profile.svg");
+
+    const fileInputRef = useRef(null); /* 이미지 업로드 */
+
     const timerRef = useRef(null);
-
-    /* 이미지 업로드 */
-    const {user, updateUser} = useAuth();
-
-    const [profileImage, setProfileImage] = useState('/static/img/profile/default-profile.svg');
-    const [profileFile, setProfileFile] = useState(null);
-    const [isUploading, setUploading] = useState(false);
-    const fileInputRef = useRef(null);
-
-    // 프로필 이미지 클릭 시, 파일 선택
-    const handleProfileClick = () => {
-        fileInputRef.current?.click();
-    }
-
-    // 프로필 이미지 파일 선택
-    const handleProfileChange = async (e) => {
-        const file = e.target.files[0];
-        if(!file) return;
-
-        // 이미지 파일인지 확인, 이미지 파일이 아닌게 맞을 경우
-        if(!file.type.startsWith("image/")){
-            alert("이미지 파일만 업로드 가능합니다.");
-            return;
-        }
-
-        // 파일 크기 확인 // 요즘은 10mb 정도는 되어야 하지만 일단 5mb
-        if(file.size > 5 * 1024 * 1024) {
-            alert("파일 크기는 5MB 를 초과할 수 없습니다.");
-            return;
-        }
-
-        // 미리보기 표기
-        const reader = new FileReader();
-        reader.onloadend = (e) => {
-            setProfileImage(e.target.result);
-        };
-        reader.readAsDataURL(file);
-        // 파일 저장
-        setProfileFile(file);
-        await uploadProfileImage(file);
-
-    }
-
-    const uploadProfileImage = async (file) => {
-        setUploading(true);
-        try {
-            const uploadFormData = new FormData();
-            uploadFormData.append("file", file);
-            const res = await  axios.post('/api/auth/profile-image', uploadFormData, {
-                headers: {
-                    'Content-Type':'multipart/form-data'
-                }
-            });
-
-            if(res.data.success === true) {
-                alert("프로필 이미지가 업데이트 되었습니다.");
-                setProfileImage(res.data.imageUrl);
-                setFormData(prev => ({ ...prev, memberProfileImage: res.data.imageUrl })); // formData에 URL 저장
-            }
-        } catch (error) {
-            alert(error);
-            // 실패 시 원래 이미지로 복구
-            setProfileImage('/static/img/profile/default-profile.svg');
-        } finally {
-            setUploading(false);
-        }
-    }
-    /* 이미지 업로드 */
 
     // 초의 경우 지속적으로 1초마다 시간을 줄이고, 0분 0초일 경우 인증 실패 처리
     // 3분 00초 일 경우 59초 부터 다시 시작하도록 세팅
@@ -305,15 +243,90 @@ const Signup = () => {
         // } else {
         //     alert("회원가입에 실패하였습니다.")
         // }
+
+        // 자바 스크립트는 매개변수 개수와 인자값의 개수를 모두 동일하게 맞춰야하나? ---> 아니요 맞출 필요 없음
+        await fetchSignup(axios, formData, profileImage);
     }
     const handleChange = (e) => {
         handleInputChange(e, setFormData);
+    }
+
+    const handleProfileImageChange = (e) => {
+        // files 파일은 value가 아니라 files
+        // e.target.value = html 내부에 클라이언트가 작성하거나 선택한 text 글자 형태의 값을 js로 가져와서 사용
+        // 맨 첫 번째 파일은 index 0 번 부터 저장
+        // 우리는 프로필 사진 1장을 가져올 것이기 때문에 e.target.files[0]
+        const html에서가져온이미지파일 = e.target.files[0];
+        if(html에서가져온이미지파일) {
+            // 파일 유효성 검사
+            if(!html에서가져온이미지파일.type.startsWith("image/")) { // image 확장자로 되어잇는 파일이 아닌게 사실이라면
+                alert('이미지 파일만 업로드 가능합니다.');
+                return; // 저장되지 못하도록 돌려보내기
+            }
+
+            if(html에서가져온이미지파일.size > 5 * 1024 * 1024) {
+                alert("파일 크기는 5MB를 초과할 수 없습니다.");
+                return;
+            }
+
+            setProfileImage(html에서가져온이미지파일); // 아무 문제 없으면 profileImage 변수에 가져온 파일 데이터 setter 이용해서 저장
+
+            // 미리보기 이미지 생성
+            const reader = new FileReader();
+            reader.onloadend = (e) => {
+                setProfilePreview(reader.result); // 이미지 읽은 데이터에 대한 결과를 미리 보기 변수에 setter 이용해서 저장
+            };
+            reader.readAsDataURL(html에서가져온이미지파일);
+        }
+    };
+    
+    const handleRemoveProfileImage = () => {
+        setProfileImage(null);
+        setProfilePreview("/static/img/profile/default-profile.svg");
+        if(fileInputRef.current) {
+            fileInputRef.current.value = ""; // 현재 새로고침 하지 않아도 저장해놓는 파일 데이터 지우기
+        }
     }
 
     return (
         <div className="page-container">
             <form onSubmit={handleSubmit}>
                 <div className="profile-image-section">
+                    <label htmlFor="memberProfile">
+                        프로필 이미지
+                    </label>
+                    <div className="profile-image-container"
+                         onClick={() => fileInputRef.current?.click()}
+                    >
+                        <img src={profilePreview}
+                             alt="프로필 미리보기"
+                             className="profile-image"
+                        />
+                        <div className="profile-image-overlay">이미지 선택</div>
+                    </div>
+                    <input type="file"
+                           accept="image/*"
+                           onChange={handleProfileImageChange}
+                           id="memberProfile"
+                           name="memberProfile"
+                           ref={fileInputRef}
+                    />
+                    {/*만약에 profileImage 변수 이름에 null 값이 아니면*/}
+                    {profileImage && (
+                        <button type="button"
+                                className="btn-reset"
+                                onClick={handleRemoveProfileImage}
+                        >
+                            이미지 제거
+                        </button>
+                    )}
+
+                    <span className="form-hint">이미지를 클릭하여 변경할 수 있습니다.(최대 5MB)</span>
+                </div>
+
+                {/*
+                <div className="profile-image-section">
+
                     <label>프로필 이미지</label>
                     <div className="profile-image-container" onClick={handleProfileClick}>
                         <img src={profileImage}
@@ -330,7 +343,7 @@ const Signup = () => {
                     />
                     <span className="form-hint">이미지를 클릭하여 변경할 수 있습니다.(최대 5MB)</span>
                 </div>
-
+                */}
                 <label htmlFor="memberEmail">
                     <span className="required">*</span> 아이디(이메일)
                 </label>
