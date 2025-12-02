@@ -121,7 +121,7 @@ const Signup = () => {
 
         // 백엔드 응답 결과를 res 라는 변수이름에 담아두기
         const res = await axios.post('/api/email/signup',
-            formData.memberEmail, // form 데이터에서 email 전달
+            {email:formData.memberEmail}, // form 데이터에서 email 전달
             {
                         headers: {'Content-Type': 'application/json'} // 글자 형태로 전달 설정
                     }
@@ -310,6 +310,7 @@ const Signup = () => {
                            id="memberProfile"
                            name="memberProfile"
                            ref={fileInputRef}
+                           style={{ display: 'none'}}
                     />
                     {/*만약에 profileImage 변수 이름에 null 값이 아니면*/}
                     {profileImage && (

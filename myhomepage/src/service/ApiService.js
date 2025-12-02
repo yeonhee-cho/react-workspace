@@ -18,7 +18,7 @@ export const API_URLS = {
     AUTH: `${API_URL}/api/auth`,
     BOARD: `${API_URL}/api/board`,
     PRODUCT: `${API_URL}/api/product`,
-    EMAIL : `${API_URL}/api/email`,
+    EMAIL: `${API_URL}/api/email`
 }
 
 /***********************************************************************
@@ -47,14 +47,20 @@ export const fetchSignup = async (axios, formData, profileImage)=> {
     // requestBody requestParam
     //    body        header
 
-    const signupData = {
+    // const signupData = {
+    //     memberName: formData.memberName,
+    //     memberEmail: formData.memberEmail,
+    //     memberPassword: formData.memberPw,
+    // }
+    const signupData = new FormData();
+    signupData.append("member", new Blob([JSON.stringify({
         memberName: formData.memberName,
         memberEmail: formData.memberEmail,
-        memberPassword: formData.memberPw,
-    }
+        memberPassword: formData.memberPw
+    })], { type: "application/json" }));
 
     if(profileImage) {
-        signupData.append('profileImage', profileImage);
+        signupData.append('memberProfileImage', profileImage);
     }
 
     try {
@@ -126,9 +132,9 @@ export const fetchMyPageEdit = async (axios, formData, setIsSubmitting) => {
             if (res.data.success === true) {
                 alert("회원정보가 수정되었습니다.");
             }
-            // else if (res.data.message === "wrongPassword") {
-            //     alert("현재 비밀번호가 일치하지 않습니다.");
-            // }
+            else if (res.data.message === "wrongPassword") {
+                alert("현재 비밀번호가 일치하지 않습니다.");
+            }
             else {
                 alert("회원정보 수정에 실패했습니다.");
             }

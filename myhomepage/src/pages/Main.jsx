@@ -11,7 +11,7 @@ const Main = () => {
     const [loading, setLoading] = useState(true);
 
     // console.log 로  res.data 데이터를 조회 F12
-    useEffect( () =>{
+    useEffect(() =>{
         fetchAllProducts(axios, setProducts, setLoading);
         fetchAllPopularBoards(axios, setBoards, setLoading);
     },[]);

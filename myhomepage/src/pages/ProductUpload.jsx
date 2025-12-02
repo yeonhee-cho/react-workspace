@@ -5,6 +5,10 @@ import {handleInputChange} from "../service/commonService";
 
 // 상품 이미지 업로드 변경
 // profileImage -> imageUrl 을 이용해서 상품 업로드 시 제품 미리보기
+/**
+ * TODO : 1. 상품 업로드를 진행할 때, 선택한 이미지 미리보기 설정
+ * const handleChangeImage = () => {}
+ */
 
 const ProductUpload = () => {
     const navigate = useNavigate();
@@ -222,7 +226,7 @@ const ProductUpload = () => {
                             이미지 URL
                         </label>
                         <input
-                            type="url"
+                            type="file"
                             id="imageUrl"
                             name="imageUrl"
                             value={product.imageUrl}

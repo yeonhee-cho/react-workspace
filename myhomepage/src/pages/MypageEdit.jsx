@@ -52,9 +52,9 @@ const MyPageEdit = () => {
             memberName: '',
             memberEmail: '',
             memberPhone: '',
-            // memberPostCode: '',
+            memberPostCode: '',
             memberAddress: '',
-            // memberDetailAddress: '',
+            memberDetailAddress: '',
             newPassword: '',
             currentPassword: '',
             confirmPassword: '',
@@ -89,12 +89,11 @@ const MyPageEdit = () => {
                     memberName: user.memberName || '',
                     memberEmail: user.memberEmail || '',
                     memberPhone: user.memberPhone || '',
+                    memberAddress: user.memberAddress || ''
 
                     // memberPostCode: user.memberPostCode || '',
                     // memberAddress: user.memberAddress || '',
                     // memberDetailAddress: user.memberDetailAddress || '',
-
-                    memberAddress: user.memberAddress || ''
                 }));
                 // 프로필 이미지 설정
                 setProfileImage(getProfileImageUrl(user));
@@ -161,7 +160,6 @@ const MyPageEdit = () => {
             }
 
             if(!validation.newPassword) {
-
                 alert("새 비밀번호를 입력해주세요.");
                 return;
             }
