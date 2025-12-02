@@ -13,7 +13,8 @@ import NotificationToast from "./components/NotificationToast";
 import ProductUpload from "./pages/ProductUpload";
 import ProductDetail from "./pages/ProductDetail";
 import Products from "./pages/Products";
-import MyPageEdit from "./pages/MypageEdit"; // 단순히 가져와서 적용할 때는 from 생략
+import MyPageEdit from "./pages/MypageEdit";
+import ProductEdit from "./pages/ProductEdit"; // 단순히 가져와서 적용할 때는 from 생략
 
 // 1. 라우팅에 필요한 컴포넌트 임포트
 //    공통 스타일 임포트
@@ -79,9 +80,10 @@ function App() {
                 <Route path="/mypage" element={<MyPage/>}/>
                 <Route path="/mypage/edit" element={<MyPageEdit/>}/>
                 <Route path="/write" element={<BoardWrite/>}/>
-                <Route path="/upload" element={<ProductUpload/>}/>
                 <Route path="/products" element={<Products/>}/>
                 <Route path="/product/:id" element={<ProductDetail/>}/>
+                <Route path="/product/edit" element={<ProductEdit/>}/>
+                <Route path="/upload" element={<ProductUpload/>}/>
             </Routes>
 
             {/* 공통 푸터 - 모든 페이지에 보이는 푸터를 작성 */}
