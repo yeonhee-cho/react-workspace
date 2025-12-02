@@ -1,5 +1,7 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import axios from "axios";
+import {fetchProductDetail} from "../service/ApiService";
 
 /**
  * TODO 수정하기 수정된 결과 반영
@@ -14,7 +16,8 @@ const ProductEdit = () => {
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
 
-    const [loading, setLoading] = useState(false);
+    // 초기값을 로딩은 true -> false
+    const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState({
         productName: '',
         productCode: '',
@@ -35,15 +38,21 @@ const ProductEdit = () => {
         '전자제품', '가전제품', '의류', '식품', '도서', '악세사리', '스포츠', '완구', '가구', '기타'
     ]
 
+    useEffect(() => {
+        fetchProductDetail(axios, id, setProduct, navigate, setLoading);
+    }, [id]);
+
     const handleCancel = () => {
-        if(window.confirm("수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.")) {
-            navigate(`/products/${id}`);
+        if (window.confirm("수정을 취소하시겠습니까? 변경사항이 저장되지 않습니다.")) {
+            navigate(`/product/${id}`);
         }
     }
 
     const handleImageClick = () => {
         fileInputRef.current?.click();
     }
+    
+    // isActive data 가 null 일 경우 N으로 체크 표기하게 설정
 
     return (
         <div className="page-container">

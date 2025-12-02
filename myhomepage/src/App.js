@@ -82,7 +82,7 @@ function App() {
                 <Route path="/write" element={<BoardWrite/>}/>
                 <Route path="/products" element={<Products/>}/>
                 <Route path="/product/:id" element={<ProductDetail/>}/>
-                <Route path="/product/edit" element={<ProductEdit/>}/>
+                <Route path="/product/edit/:id" element={<ProductEdit/>}/>
                 <Route path="/upload" element={<ProductUpload/>}/>
             </Routes>
 

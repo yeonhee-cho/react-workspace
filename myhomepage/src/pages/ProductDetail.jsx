@@ -135,7 +135,7 @@ const ProductDetail = () => {
                 {/* 아래 버튼은 로그인한 계정이 admin 일 경우 수정 / 삭제 가능하게 표기하기 */}
                 <div className="product-detail-buttons">
                     <button className="btn-edit"
-                    onClick={() => navigate((`/products/edit/${id}`))}
+                    onClick={() => navigate((`/product/edit/${id}`))}
                     >
                         수정
                     </button>
