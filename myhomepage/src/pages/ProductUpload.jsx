@@ -8,30 +8,35 @@ import {handleInputChange} from "../service/commonService";
 /**
  * TODO : 1. 상품 업로드를 진행할 때, 선택한 이미지 미리보기 설정
  * const handleChangeImage = () => {}
+ *
+ * 2-1. 상품 업로드 시 상품 수정
+ * isActive 를 선택하여 판매중/판매중지중 선택하여 업로드 가능하도록 설정
+ * 2-2. serviceImpl 에서 main.jpg로 저장되는 것이 아니라,
+ * main - 본래이름 형태로 저장되게 코드 수정
  */
 
 const ProductUpload = () => {
     const navigate = useNavigate();
     const [loading, setLoding] = useState(false);
     const [product, setProduct] = useState({
-        productName:'',
-        productCode:'',
-        category:'',
-        price:'',
-        stockQuantity:'',
-        description:'',
-        manufacturer:'',
-        imageUrl:'',
-    }) // 리퀘스트, 파람, 바디, 파트
-    // formData 변수 생성
+        productName :'',
+        productCode :'',
+        category :'',
+        price :'',
+        stockQuantity :'',
+        description :'',
+        manufacturer :'',
+        imageUrl :'',
+        isActive:"Y" // 기본 값 판매 중
+    });
     const [formData, setFormData] = useState({
-        productName:'',
-        productCode:'',
-        category:'',
-        price:'',
-        stockQuantity:'',
-        description:'',
-        manufacturer:'',
+        productName :'',
+        productCode :'',
+        category :'',
+        price :'',
+        stockQuantity :'',
+        description :'',
+        manufacturer :''
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -115,7 +120,7 @@ const ProductUpload = () => {
     * */
       const handleChange = (e) => {
         const {name, value} = e.target;
-        handleInputChange(e, setFormData);
+        handleInputChange(e, setProduct);
         // 입력 시 해당 필드의 에러 메세지 제거
         if(errors[name]) {
             setErrors(p => ({
@@ -370,6 +375,36 @@ const ProductUpload = () => {
                             placeholder="상품에 대한 설명을 입력하세요"
                             rows="5"
                         />
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            판매 상태<span className="required">*</span>
+                        </label>
+                        <div className="radio-group">
+                            <label className="radio-label">
+                                <input
+                                    type="radio"
+                                    name="isActive"
+                                    value="Y"
+                                    checked={product.isActive === "Y"}
+                                    onChange={handleChange}
+                                />
+                                <span>판매중</span>
+                            </label>
+                            <label className="radio-label">
+                                <input
+                                    type="radio"
+                                    name="isActive"
+                                    value="N"
+                                    checked={product.isActive === "N"}
+                                    onChange={handleChange}
+                                />
+                                <span>판매중지</span>
+                            </label>
+                        </div>
+                        <small className="form-hint">
+                            판매 중으로 설정하면 고객에게 노출 합니다.
+                        </small>
                     </div>
                     <div className="form-buttons">
                         <button type="submit"

@@ -62,7 +62,10 @@ const ProductDetail = () => {
                 </button>
             </div>
             <div className="product-detail-image">
-                {product.imageUrl ? <img src="{product.imageUrl}" alt="{product.productName}"/> : <img src="/static/img/default.png" alt="default"/>}
+                {product.imageUrl ?
+                    <img src={product.imageUrl} alt={product.productName}/>
+                    :
+                    <img src="/static/img/default.png" alt="default"/>}
             </div>
             <div className="product-detail-info">
                 <div className="product-detail-category">
