@@ -2,6 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {fetchProductDetail} from "../service/ApiService";
+import {handleChangeImage} from "../service/commonService";
 
 /**
  * TODO 수정하기 수정된 결과 반영
@@ -12,6 +13,9 @@ import {fetchProductDetail} from "../service/ApiService";
  */
 
 const ProductEdit = () => {
+    // 윈도우는 기본적으로 원화모양으로 폴더 나 위치 구분 코드 상에서는 \ 모형으로 표기
+    // \ 주석에도 쓰면 안 됨!! \ 특수 기호를 추가로 작성하는 것은 기본으로 내장되어있는 특수 기호들에 대한 효과가 방동 되므로 사용하지 않는다.
+    const defaultImg = '/static/img/default.png'; // \ 특수 기호를 문자열로 쓸거야
     const {id} = useParams();
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
@@ -28,6 +32,18 @@ const ProductEdit = () => {
         manufacturer: '',
         imageUrl: '',
         isActive: 'Y'
+    });
+
+    const [formData, setFormData] = useState({
+        productName: product.productName,
+        productCode: product.productCode,
+        category: product.category,
+        price: product.price,
+        stockQuantity: product.stockQuantity,
+        description: product.description,
+        manufacturer: product.manufacturer,
+        imageUrl: product.imageUrl,
+        isActive: product.isActive,
     });
 
     const [imageFile, setImageFile] = useState(null);
@@ -54,6 +70,64 @@ const ProductEdit = () => {
     
     // isActive data 가 null 일 경우 N으로 체크 표기하게 설정
 
+    /**
+     * 0. 제출 일시 정지, 유효성 검사
+     * 1. 변경된 데이터를 가져온다.
+     * 2. 백엔드에 데이터를 어떻게 전달할 지 결정
+     * 3. 백엔드에서 @RequestPart 라면 product 객체와 이미지 파일을 분리한 후, product 객체는 json -> 문자열 형태로
+     * 4. 이미지는 Multipart 로 전달한다.
+     * 5. axios put / path 를 이용하여 백엔드 Mapping 과 연동한다.
+     */
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            /* 유효성 검사 */
+            const uploadFormData = new FormData;
+            const {imageUrl, ...updateProductData} = product;
+            const updateBlob = new Blob(
+                [JSON.stringify(updateProductData)],
+                {type:"application/json"}
+                );
+            uploadFormData.append("product",updateBlob);
+            if(imageFile) {
+                uploadFormData.append("imageUrl", imageUrl);
+            }
+
+            const r = await axios.put(
+                'https://localhost:8085/api/product/' + id, // 백엔드 연결 주소
+                uploadFormData, { // 어떤 데이터를 전달할 것인가
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    } // 백엔드에게 어떤 데이터를 전달할지 헤더로 알릴 것인가
+                }
+            );
+
+            // 백엔드에서 응답오기 성공 후 긍정적인 답변이 온다면
+            if(r.data.success) {
+                alert(r.data.message);
+                navigate(`/product/${id}`);
+            }
+            // 백엔드에서 응답오기 성공한 후 부정적인 답변이 온다면
+            else {
+                alert(r.data.message);
+            }
+        } catch (err) {
+            // 백엔드에서 응답받기를 실패한다면
+            console.error("error : ", err);
+
+            if (err.r?.data?.message) {
+                alert(err.r.data.message);
+            } else {
+                alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
+            }
+        } finally {
+            setLoading(false);
+        }
+
+
+    }
+
     return (
         <div className="page-container">
             <div className="product-upload-container">
@@ -65,7 +139,7 @@ const ProductEdit = () => {
                         <label>상품 이미지</label>
                         <div className="profile-image-container" onClick={handleImageClick}>
                             <img
-                                src={previewImage || product.imageUrl || '/static/img/default.png'}
+                                src={previewImage || product.imageUrl || defaultImg} // 1순위 2순위 3순위
                                 alt="상품 이미지"
                                 className="profile-image"
                             />
@@ -78,6 +152,7 @@ const ProductEdit = () => {
                             ref={fileInputRef}
                             accept="image/*"
                             style={{ display: 'none' }}
+                            onChange={handleChangeImage(setPreviewImage, setImageFile, setProduct)}
                         />
                         <small className="form-hint">
                             이미지를 클릭하여 변경할 수 있습니다.(최대 5MB)
@@ -240,7 +315,9 @@ const ProductEdit = () => {
                         <button
                             type="submit"
                             className="btn-submit"
-                            disabled={loading}>
+                            disabled={loading}
+                            onClick={handleSubmit}
+                        >
                             {loading ? '수정 중...' : '수정 완료'}
                         </button>
                         <button

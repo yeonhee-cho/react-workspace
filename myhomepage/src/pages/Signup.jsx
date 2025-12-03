@@ -121,7 +121,7 @@ const Signup = () => {
 
         // 백엔드 응답 결과를 res 라는 변수이름에 담아두기
         const res = await axios.post('/api/email/signup',
-            {email:formData.memberEmail}, // form 데이터에서 email 전달
+            {email:formData.memberEmail.trim()}, // form 데이터에서 email 전달
             {
                         headers: {'Content-Type': 'application/json'} // 글자 형태로 전달 설정
                     }

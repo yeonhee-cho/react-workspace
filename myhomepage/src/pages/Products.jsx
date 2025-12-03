@@ -95,7 +95,14 @@ const Products = () => {
 
                             <div className="product-image">
                                 {product.imageUrl ? (
-                                        <img src={product.imageUrl} alt={product.productName}/>
+                                        <img src={product.imageUrl}
+                                             alt={product.productName}
+                                             onError={(e) => {
+                                                 e.target.onerror = null;
+                                                 // e.target.src = "상품이 존재하지 않을 경우 기본 이미지 url 작성"
+                                                 e.target.src = "/static/img/default.png"
+                                             }}
+                                        />
                                     ) :
                                     (
                                         <img src="/static/img/default.png" alt="default"/>

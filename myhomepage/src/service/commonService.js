@@ -176,82 +176,55 @@ export const handleInputChange = (e, setFormData) => {
 }
 
 /*마이페이지 프로덕트 회원가입*/
-// export const handleChangeImage = (e) => {
-//     // type = file 은 이미지 이 외에도 항시 1개 이상의 데이터를 가져온다. 가 기본 전제로 된 속성으로
-//     // input 에서 하나의 이미지만 가져온다 하더라도 항시 [0]번째의 데이터를 가져온다로 작성해야 함
-//     const html에서가져온이미지첫번째파일 = e.target.files[0];
-//
-//     if(html에서가져온이미지첫번째파일) {
-//         if(!html에서가져온이미지첫번째파일.type.startsWith('image/')) {
-//             alert("이미지 파일만 업로드 가능합니다.");
-//             e.target.value = ""; // 한 번 더 안정적으로 input 내 데이터 제거
-//             return;
-//         }
-//
-//         // 파일 크기 검증 (예 : 5MB 제한)
-//         const maxsize = 5 * 1024 * 1024;
-//         if(html에서가져온이미지첫번째파일.size > maxsize) {
-//             alert("파일 크기는 5MB 이하여야 합니다.");
-//             e.target.value="";
-//             return;
-//         }
-//
-//         // FileReader 라는 자바 스크립트에 내장된 읽기 기능을 사용해서
-//         // 파일 미리보기 생성
-//         const reader = new FileReader();
-//         reader.onload = (event) => {
-//             // FileReader 를 만든 개발자가 target을 한 다음 value 나
-//             // files[인덱스] 대신
-//             // 가져 온 것에 대한 결과라는 변수 이름을 사용하여
-//             // result 를 사용한다.
-//             setPreviewImage(event.target.result);
-//         };
-//
-//         // URL 에 존재하는 데이터를 읽겠다. reader 에서
-//         reader.readAsDataURL(html에서가져온이미지첫번째파일);
-//
-//         setImageFile(html에서가져온이미지첫번째파일);
-//
-//         setProduct(prev => ({
-//             ...prev,
-//             imageUrl: html에서가져온이미지첫번째파일
-//         }))
-//     }
-// }
+// export const handleChangeImage = (e, setPreviewImage, setImageFile, setProduct) => {
+// 위의 경우
+// onChange{handleChangeImage(e, setPreviewImage, setImageFile, setProduct)} 불가
+// onChange{(e) => handleChangeImage(e, setPreviewImage, setImageFile, setProduct)} 사용가능
 
-// input 창 display:none 처리
-// 상품 미리보기가 null 값 일 경우 보여주지 않기 세팅
-// "previewImg" 문자열을 변수로 사용
+// 아래의 경우
+// jsx에서 e를 생략하고 작성할 수 있다.
+// onChange{handleChangeImage(setPreviewImage, setImageFile, setProduct)}
+export const handleChangeImage = (setPreviewImage, setImageFile, setProduct) => (e) => {
+    // type = file 은 이미지 이 외에도 항시 1개 이상의 데이터를 가져온다. 가 기본 전제로 된 속성으로
+    // input 에서 하나의 이미지만 가져온다 하더라도 항시 [0]번째의 데이터를 가져온다로 작성해야 함
+    const html에서가져온이미지첫번째파일 = e.target.files[0];
 
-// 입력값 변경 핸들러
-/*const handleChange = (e) => {
-    const {name, value} = e.target;
+    if(html에서가져온이미지첫번째파일) {
+        // 이미지 파일인지 확인, 이미지 파일이 아닌게 맞을 경우
+        if(!html에서가져온이미지첫번째파일.type.startsWith('image/')) {
+            alert("이미지 파일만 업로드 가능합니다.");
+            e.target.value = ""; // 한 번 더 안정적으로 input 내 데이터 제거
+            return;
+        }
 
-    setProduct(p => ({
-        ...p,[name]:value,
-    }))
+        // 파일 크기 검증 (예 : 5MB 제한) // 요즘은 10mb 정도는 되어야 하지만 일단 5mb
+        const maxsize = 5 * 1024 * 1024;
+        if(html에서가져온이미지첫번째파일.size > maxsize) {
+            alert("파일 크기는 5MB 이하여야 합니다.");
+            e.target.value="";
+            return;
+        }
 
-    // 입력 시 해당 필드의 에러 메세지 제거
-    if(errors[name]) {
-        setErrors(p => ({
-            ...p,[name]: ''
-        }));
-    }
-};*/
+        // FileReader 라는 자바 스크립트에 내장된 읽기 기능을 사용해서
+        // 파일 미리보기 생성
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            // FileReader 를 만든 개발자가 target을 한 다음 value 나
+            // files[인덱스] 대신
+            // 가져 온 것에 대한 결과라는 변수 이름을 사용하여
+            // result 를 사용한다.
+            setPreviewImage(event.target.result);
+        };
 
-/*
-* 기존 변수 명칭은 모두 setFormData 사용
-* setProduct 변수 명칭 사용
-* 제품 업로드를 했을 때 제품이 무사히 업로드 되는지 확인
-* */
-const handleChange = (e) => {
-    const {name, value} = e.target;
-    handleInputChange(e, setProduct);
-    // 입력 시 해당 필드의 에러 메세지 제거
-    if(errors[name]) {
-        setErrors(p => ({
-            ...p, [name]:''
-        }));
+        // URL 에 존재하는 데이터를 읽겠다. reader 에서
+        reader.readAsDataURL(html에서가져온이미지첫번째파일);
+
+        setImageFile(html에서가져온이미지첫번째파일);
+
+        setProduct(prev => ({
+            ...prev,
+            imageUrl: html에서가져온이미지첫번째파일
+        }))
     }
 }
 

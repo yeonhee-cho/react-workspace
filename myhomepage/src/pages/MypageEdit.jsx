@@ -39,6 +39,11 @@ document.querySelector("#searchAddress").addEventListener("click",daumPostCode);
                 <input type="text" name="memberAddress" placeholder="상세 주소" id="detailAddress">
             </div>
 * */
+
+/*
+* handleChangeImage 함수 재사용하여 변경
+* product 관련 페이지들 로그인 안되어 있으면 바로 로그인 페이지로 이동
+* */
 const MyPageEdit = () => {
     const navigate = useNavigate();
     const {user, isAuthenticated, updateUser, loading} = useAuth();

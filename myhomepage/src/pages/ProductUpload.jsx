@@ -1,23 +1,22 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import axios from "axios";
-import {handleInputChange} from "../service/commonService";
+import {handleChangeImage, handleInputChange} from "../service/commonService";
 
 // 상품 이미지 업로드 변경
 // profileImage -> imageUrl 을 이용해서 상품 업로드 시 제품 미리보기
 /**
- * TODO : 1. 상품 업로드를 진행할 때, 선택한 이미지 미리보기 설정
+ * 1. 상품 업로드를 진행할 때, 선택한 이미지 미리보기 설정
  * const handleChangeImage = () => {}
- *
  * 2-1. 상품 업로드 시 상품 수정
- * isActive 를 선택하여 판매중/판매중지중 선택하여 업로드 가능하도록 설정
+ * isActive 를 선택하여 판매중 / 판매중지 중 선택하여 업로드 가능하도록 설정
  * 2-2. serviceImpl 에서 main.jpg로 저장되는 것이 아니라,
  * main - 본래이름 형태로 저장되게 코드 수정
  */
 
 const ProductUpload = () => {
     const navigate = useNavigate();
-    const [loading, setLoding] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [product, setProduct] = useState({
         productName :'',
         productCode :'',
@@ -49,49 +48,6 @@ const ProductUpload = () => {
     const categories = [
         '전자제품', '가전제품','의류','식품','도서', '악세사리', '스포츠','완구', '가구', '기타'
     ]
-
-    const handleChangeImage = (e) => {
-        // type = file 은 이미지 이 외에도 항시 1개 이상의 데이터를 가져온다. 가 기본 전제로 된 속성으로
-        // input 에서 하나의 이미지만 가져온다 하더라도 항시 [0]번째의 데이터를 가져온다로 작성해야 함
-        const html에서가져온이미지첫번째파일 = e.target.files[0];
-
-        if(html에서가져온이미지첫번째파일) {
-            if(!html에서가져온이미지첫번째파일.type.startsWith('image/')) {
-                alert("이미지 파일만 업로드 가능합니다.");
-                e.target.value = ""; // 한 번 더 안정적으로 input 내 데이터 제거
-                return;
-            }
-
-            // 파일 크기 검증 (예 : 5MB 제한)
-            const maxsize = 5 * 1024 * 1024;
-            if(html에서가져온이미지첫번째파일.size > maxsize) {
-                alert("파일 크기는 5MB 이하여야 합니다.");
-                e.target.value="";
-                return;
-            }
-
-            // FileReader 라는 자바 스크립트에 내장된 읽기 기능을 사용해서
-            // 파일 미리보기 생성
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                // FileReader 를 만든 개발자가 target을 한 다음 value 나
-                // files[인덱스] 대신
-                // 가져 온 것에 대한 결과라는 변수 이름을 사용하여
-                // result 를 사용한다.
-                setPreviewImage(event.target.result);
-            };
-
-            // URL 에 존재하는 데이터를 읽겠다. reader 에서
-            reader.readAsDataURL(html에서가져온이미지첫번째파일);
-
-            setImageFile(html에서가져온이미지첫번째파일);
-
-            setProduct(prev => ({
-                ...prev,
-                imageUrl: html에서가져온이미지첫번째파일
-            }))
-        }
-    }
 
     // input 창 display:none 처리
     // 상품 미리보기가 null 값 일 경우 보여주지 않기 세팅
@@ -167,7 +123,7 @@ const ProductUpload = () => {
             return;
         }
         */
-        setLoding(true);
+        setLoading(true);
 
         // 백엔드 연결 시도
         try {
@@ -183,17 +139,17 @@ const ProductUpload = () => {
             );
             uploadFormdata.append('product', productBlob);
 
-            // 이미지 파일이 잇으면 추가
+            // 이미지 파일이 있으면 추가
             if(imageFile) {
                 uploadFormdata.append('imageFile', imageFile)
             }
             const r = await axios.post(
                 'http://localhost:8085/api/product', uploadFormdata, {
-                        headers: {
-                            'Content-Type': 'multipart/form-data'
-                        }
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
                     }
-                );
+                }
+            );
             if(r.data.success) {
                 alert(r.data.message);
                 navigate("/");
@@ -208,7 +164,7 @@ const ProductUpload = () => {
                 alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
             }
         } finally {
-            setLoding(false); // 상품 등록을 성공, 실패 이후 loading 중단
+            setLoading(false); // 상품 등록을 성공, 실패 이후 loading 중단
         }
     }
 
@@ -339,7 +295,7 @@ const ProductUpload = () => {
                             type="file"
                             id="imageUrl"
                             name="imageUrl"
-                            onChange={handleChangeImage}
+                            onChange={handleChangeImage(setPreviewImage, setImageFile, setProduct)}
                             accept="image/*"
                             style={{display:"none"}}
                         />
