@@ -2,7 +2,7 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {fetchProductDetail} from "../service/ApiService";
-import {handleChangeImage} from "../service/commonService";
+import {handleChangeImage, handleInputChange} from "../service/commonService";
 
 /**
  * TODO 수정하기 수정된 결과 반영
@@ -84,18 +84,19 @@ const ProductEdit = () => {
         try {
             /* 유효성 검사 */
             const uploadFormData = new FormData;
+            // 따로 제외하고 싶은 변수 명칭을 ... 형태가 나오기 전에 작성하여 제거한 후, 나머지 데이터를 전달할 때 사용하는 방법
             const {imageUrl, ...updateProductData} = product;
             const updateBlob = new Blob(
                 [JSON.stringify(updateProductData)],
                 {type:"application/json"}
                 );
-            uploadFormData.append("product",updateBlob);
+            uploadFormData.append("product", updateBlob);
             if(imageFile) {
-                uploadFormData.append("imageUrl", imageUrl);
+                uploadFormData.append("imageFile", imageFile);
             }
 
             const r = await axios.put(
-                'https://localhost:8085/api/product/' + id, // 백엔드 연결 주소
+                `http://localhost:8085/api/product/${id}`, // 백엔드 연결 주소
                 uploadFormData, { // 어떤 데이터를 전달할 것인가
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -113,20 +114,14 @@ const ProductEdit = () => {
                 alert(r.data.message);
             }
         } catch (err) {
-            // 백엔드에서 응답받기를 실패한다면
-            console.error("error : ", err);
-
-            if (err.r?.data?.message) {
-                alert(err.r.data.message);
-            } else {
-                alert("상품 등록에 실패했습니다. 다시 시도해주세요.");
-            }
-        } finally {
-            setLoading(false);
+            alert("서버에 문제가 발생했습니다.");
         }
-
-
     }
+
+    const handleChange = (e) => {
+        handleInputChange(e, setProduct);
+    }
+
 
     return (
         <div className="page-container">
@@ -170,6 +165,7 @@ const ProductEdit = () => {
                             name="productName"
                             value={product.productName}
                             placeholder="상품명을 입력하세요."
+                            onChange={handleChange}
                             maxLength="200"
                         />
                         {errors.productName && (
@@ -202,7 +198,9 @@ const ProductEdit = () => {
                         <select
                             id="category"
                             name="category"
-                            value={product.category}>
+                            value={product.category}
+                            onChange={handleChange}
+                        >
                             <option value="">카테고리를 선택하세요.</option>
                             {categories.map(category => (
                                 <option key={category} value={category}>
@@ -225,6 +223,7 @@ const ProductEdit = () => {
                             id="price"
                             name="price"
                             value={product.price}
+                            onChange={handleChange}
                             placeholder="가격 (원)"
                             min="0"
                         />
@@ -242,6 +241,7 @@ const ProductEdit = () => {
                             type="number"
                             id="stockQuantity"
                             name="stockQuantity"
+                            onChange={handleChange}
                             value={product.stockQuantity}
                             placeholder="재고 수량"
                             min="0"
@@ -261,6 +261,7 @@ const ProductEdit = () => {
                             id="manufacturer"
                             name="manufacturer"
                             value={product.manufacturer}
+                            onChange={handleChange}
                             placeholder="제조사 명을 입력하세요."
                             maxLength="100"
                         />
@@ -304,6 +305,7 @@ const ProductEdit = () => {
                         <textarea
                             id="description"
                             name="description"
+                            onChange={handleChange}
                             value={product.description}
                             placeholder="상품에 대한 설명을 입력하세요"
                             rows="5"

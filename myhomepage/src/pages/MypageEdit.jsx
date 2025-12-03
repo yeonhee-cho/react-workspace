@@ -187,7 +187,7 @@ const MyPageEdit = () => {
         }, 1000);
         */
         fetchMyPageEdit(axios, formData, navigate, setIsSubmitting);
-        fetchMyPageEditWithProfile(axios, formData, profileFile, navigate, setIsSubmitting);
+        // fetchMyPageEditWithProfile(axios, formData, profileFile, navigate, setIsSubmitting);
     }
 
     /*

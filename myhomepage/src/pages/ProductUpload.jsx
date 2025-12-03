@@ -141,7 +141,7 @@ const ProductUpload = () => {
 
             // 이미지 파일이 있으면 추가
             if(imageFile) {
-                uploadFormdata.append('imageFile', imageFile)
+                uploadFormdata.append('imageFile', imageFile);
             }
             const r = await axios.post(
                 'http://localhost:8085/api/product', uploadFormdata, {
@@ -288,7 +288,13 @@ const ProductUpload = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="imageUrl" className="btn-upload">
+                        <label htmlFor="imageUrl"
+                               className="btn-upload"
+                               style={{color:"#fff",
+                                       width: "100%",
+                                       boxSizing: "border-box"
+                                     }}
+                        >
                             이미지 업로드
                         </label>
                         <input

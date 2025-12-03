@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {useAuth} from "../context/AuthContext";
 import {boardSave} from "../service/ApiService";
-import {handleInputChange} from "../service/commonService";
+import {handleChangeImage, handleInputChange} from "../service/commonService";
 
 /**
  * 게시물 작성 시, 작성자를 로그인한 유저 이름을 가져오고, 변경 불가능하게 설정 <p> 태그 활용
@@ -32,23 +32,67 @@ import {handleInputChange} from "../service/commonService";
  *      email = undefined;
  *  }
  */
+/*
+TODO 게시물 작성하기 에서 게시물 관련 이미지 추가 넣기
+1. 게시물 작성할 때, 게시물 이미지 추가하기와 같은 라벨 추가
+2. 라벨을 선택했을 때, 이미지만 선택 가능하도록 input 실행
+3. input = display:none;
+4. 이미지 추가하기 클릭하면 새롭게 클릭된 이미지로 변경
+
+등록하기를 했을 경우에만 추가하기 가능
+*/
 const BoardWrite = () => {
     const {user, isAuthenticated, logoutFn} = useAuth();
     // form 데이터 내부 초기값
     // 작성자 -> 추후 변경 불가하게 로그인한 아이디로 박제 예정
     // react-router-dom 에 존재하는 path 주소 변경 기능 사용
     const navigate = useNavigate();
+
+    // 이미지 관련 상태
+    // imageFile : 업로드 할 이미지 파일을 따로 저장
+    // imageUrl : 클라이언트가 input 창에 넣어 준 데이터
+    const [uploadedBoardImageFile, setUploadedBoardImageFile] = useState(null); // 실제 데이터베이스에 업로드하고, 파일 폴더에 저장할 이미지 파일
+    const [boardImagePreview, setBoardImagePreview] = useState(null); // 이미지 미리보기
+
     // js 는 컴파일 형태가 아니기 때문에, 변수 정의는 순차적으로 진행하므로, user 를 먼저 호출하고 나서
     // user 관련된 데이터 활용
     const [formData, setFormData] = useState({
         title: '',
         content: '',
-        writer: user.memberEmail || '',
+        writer: user?.memberEmail || '',
+        imageUrl:'',
     })
 
-    const handleSubmit = (e) => {
+    const fileInputRef = useRef(null);
+
+    const handleSubmit = async (e) => {
         e.preventDefault(); // 제출 일시 중지
-        boardSave(axios, {...formData, writer:user?.memberEmail}, navigate);
+
+        try {
+            const boardUploadFromData = new FormData();
+            // 1. 이미지 url 을 나머지 데이터 JSON 으로 변환
+            const {imageUrl, ...boardDataWithouImage} = formData; // boardFormData
+            // 2. 게시물 작성자에 user로 로그인 했을 때 멤버 아이디 넣기
+            boardDataWithouImage.writer = user?.memberEmail;
+
+            // 3. boardDataBlob 처리 해주기
+            const boardDataBlob = new Blob(
+                [JSON.stringify(formData)],
+                {type:'application/json'}
+            );
+
+            // FormData 에 board 데이터 추가
+             boardUploadFromData.append('board',boardDataBlob);
+
+             // 4. 이미지 파일이 있으면 formData 에 추가
+            if(uploadedBoardImageFile) boardUploadFromData.append('imageFile', uploadedBoardImageFile);
+            
+            // 5. 백엔드 호출
+            boardSave(axios,{...formData, writer:user?.memberEmail}, navigate);
+
+        } catch (err) {
+
+        }
     }
 
     const handleChange = (e) => {
@@ -58,7 +102,7 @@ const BoardWrite = () => {
     // ok 를 할 경우 게시물 목록으로 돌려보내기
     // 기능이 하나이기 때문에 if 다음 navigate 는 {} 생략 후 작성
     const handleCancel = () => {
-        if(window.confirm("작성을 취소하시겠습니까?")) navigate('/board');
+        if (window.confirm("작성을 취소하시겠습니까?")) navigate('/board');
     }
     
     return (
@@ -79,6 +123,43 @@ const BoardWrite = () => {
                             <span className="user-email">{user?.memberName}</span>
                         </div>
                     </div>
+
+
+                    <div className="form-group">
+                        <label htmlFor="imageUrl" className="btn-upload">
+                            게시물 이미지 추가하기
+                        </label>
+                        <input
+                            type="file"
+                            id="imageUrl"
+                            name="imageUrl"
+                            ref={fileInputRef}
+                            onChange={handleChangeImage(setBoardImagePreview, setUploadedBoardImageFile, setFormData)}
+                            accept="image/*"
+                            style={{display: 'none'}}
+                        />
+                        <small className="form-hint">
+                            게시물 이미지를 업로드 하세요. (최대 5MB, 이미지 파일만 가능)
+                        </small>
+
+                        {boardImagePreview && (
+                            <div className="image-preview">
+                                <img
+                                    src={boardImagePreview}
+                                    alt="미리보기"
+                                    style={{
+                                        maxWidth: '100%',
+                                        maxHeight: '400px',
+                                        marginTop: '10px',
+                                        border: '1px solid #ddd',
+                                        borderRadius: '5px',
+                                        padding: '5px'
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </div>
+
                     <label>제목 :
                         {/* "" 는 String 값, {}는 다 쓸 수 있음.. */}
                         <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} placeholder="제목을 입력하세요." maxLength={200} required/>

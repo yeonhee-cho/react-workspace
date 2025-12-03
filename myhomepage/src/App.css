@@ -2092,7 +2092,9 @@ button.loading::after {
 }
 
 /* 상품 업로드 이미지 */
-
+.page-container form .form-group label.btn-upload{
+    color:#fff;
+}
 .btn-upload {
     display: inline-block;
     padding: 12px 24px;
@@ -2106,6 +2108,8 @@ button.loading::after {
     transition: all 0.3s;
     text-align: center;
     margin-bottom: 10px;
+    width:100%;
+    box-sizing: border-box;
 }
 
 .btn-upload:hover {
