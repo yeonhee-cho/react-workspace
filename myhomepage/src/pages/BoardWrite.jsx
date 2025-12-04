@@ -58,18 +58,18 @@ const BoardWrite = () => {
     const [uploadedMainBoardImageFiles, setUploadedMainBoardImageFiles] = useState(null); // 실제 데이터베이스에 업로드하고, 파일 폴더에 저장할 이미지 파일
     const [boardMainImagePreviews, setBoardMainImagePreviews] = useState(null); // 이미지 미리보기
 
-    // 상세 이미지 관련
-    const detailImgsFileInputRef = useRef(null);
-    const [uploadedDetailBoardImageFiles, setUploadedDetailBoardImageFiles] = useState(null);
-    const [boardDetailImagePreviews, setBoardDetailImagePreviews] = useState([]);
+    // 상세 이미지 관련 (최대 5장)
+    const 상세사진새로고침해도상태변화없도록설정 = useRef(null);
+    const [상세사진이름들, set상세사진이름들] = useState(null);
+    const [상세사진들미리보기, set상세사진들미리보기] = useState([]);
 
+    // 상세 이미지 관련 (최대 5장)
     // js 는 컴파일 형태가 아니기 때문에, 변수 정의는 순차적으로 진행하므로, user 를 먼저 호출하고 나서
     // user 관련된 데이터 활용
     const [board, setBoard] = useState({
         title: '',
         content: '',
         writer: user?.memberEmail || '',
-        imageUrl:'',
     })
 
     /**
@@ -90,14 +90,16 @@ const BoardWrite = () => {
 
         try {
             const boardUploadFromData = new FormData();
-            // 1. 이미지 url 을 제외한 나머지 데이터 JSON 으로 변환
-            const {imageUrl, ...boardDataWithoutImage} = board; // boardFormData
-            // 2. 게시물 작성자에 user로 로그인 했을 때 멤버 아이디 넣기
-            boardDataWithoutImage.writer = user?.memberEmail;
+
+            const boardData = {
+                title: board.title,
+                content: board.content,
+                writer: user?.memberEmail,
+            }
 
             // 3. boardDataBlob 처리 해주기
             const boardDataBlob = new Blob(
-                [JSON.stringify(boardDataWithoutImage)],
+                [JSON.stringify(boardData)],
                 {type:'application/json'}
             );
 
@@ -105,7 +107,14 @@ const BoardWrite = () => {
              boardUploadFromData.append('board', boardDataBlob);
 
              // 4. 이미지 파일이 있으면 formData 에 추가
-            if(uploadedMainBoardImageFiles) boardUploadFromData.append('imageFile', uploadedMainBoardImageFiles);
+            if(uploadedMainBoardImageFiles) boardUploadFromData.append('mainImage', uploadedMainBoardImageFiles);
+            
+            // 상세 이미지들 추가
+            if(상세사진이름들 && 상세사진이름들.length > 0) {
+                상세사진이름들.forEach((사진한장씩) => {
+                    boardUploadFromData.append('detailImageFile', 사진한장씩);
+                })
+            }
             
             // 5. 백엔드 호출
             await boardSave(axios, boardUploadFromData, navigate); // 추가적인 로직이 잇을 수 있으니 async await 넣어주기
@@ -142,7 +151,7 @@ const BoardWrite = () => {
             }
 
             // for문을 통해 모든 사진에 대한 검증이 종료되면, 상세이미지 파일에 파일 명칭 저장
-            setUploadedDetailBoardImageFiles(files);
+            set상세사진이름들(files);
 
             // 미리보기 생성
             const 미리보기할상세사진들 = [];
@@ -157,7 +166,7 @@ const BoardWrite = () => {
                     // 모든 파일 로드 완료 시
                     if(사진개수 === files.length) {
                         // 미리보기화면에서 보일 수 있도록 setter를 이용해서 미리보기 변수에 저장
-                        setBoardDetailImagePreviews(미리보기할상세사진들);
+                        set상세사진들미리보기(미리보기할상세사진들);
                     }
                 };
                 // 파일 하나씩 하나씩 미리보기 생성
@@ -258,7 +267,7 @@ const BoardWrite = () => {
                         <input type="file"
                                id="detailImages"
                                name="detailImages"
-                               ref={detailImgsFileInputRef}
+                               ref={상세사진새로고침해도상태변화없도록설정}
                                onChange={handleDetailImagesChanges}
                                accept="image/*"
                                multiple
@@ -267,19 +276,21 @@ const BoardWrite = () => {
                         <small className="form-hint">
                             상세 이미지를 업로드하세요. (최대 5개, 각 5MB 이하)
                         </small>
-                        {boardDetailImagePreviews.length > 0 && (
+                        {상세사진들미리보기.length > 0 && (
                             <div className="multiple-images-preview">
                                 <p className="detail-images-selected-text">
-                                    선택된 이미지 : {boardDetailImagePreviews.length} 개
+                                    선택된 이미지 : {상세사진들미리보기.length} 개
                                 </p>
 
-                                {boardDetailImagePreviews.map((image, index) => (
-                                    <div key={index} className="detail-image-item">
-                                        <img src={image}
-                                             alt={`상세이미지 ${index + 1}`}
-                                        />
-                                    </div>
-                                ))}
+                                <div className="detail-image-list" style={{display:"flex"}}>
+                                    {상세사진들미리보기.map((image, index) => (
+                                            <div key={index} className="detail-image-item">
+                                                <img src={image}
+                                                     alt={`상세이미지 ${index + 1}`}
+                                                />
+                                            </div>
+                                    ))}
+                                </div>
                             </div>
                         )}
                     </div>
