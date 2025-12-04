@@ -40,7 +40,7 @@ const Board = () => {
         <div className="page-container">
             <div className="board-header">
                 <h1>게시판</h1>
-                <button className="button" onClick={() => goToPage(navigate, 'write')}>
+                <button className="button" onClick={() => goToPage(navigate, '/write')}>
                     글쓰기
                 </button>
             </div>

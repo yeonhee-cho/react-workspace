@@ -56,6 +56,26 @@ const BoardWrite = () => {
 
     // js 는 컴파일 형태가 아니기 때문에, 변수 정의는 순차적으로 진행하므로, user 를 먼저 호출하고 나서
     // user 관련된 데이터 활용
+    const [boards, setBoards] = useState({
+        title: '',
+        content: '',
+        writer: user?.memberEmail || '',
+        imageUrl:'',
+    })
+
+    /**
+     * @boards  상태 관리 변수 이름, 기능 객체
+     * 언제 사용하는가 : input, textarea 등에서 value = {boards.title} 형태로 화면에 표시
+     * 업데이트 : setBoards() 를 통해 값 변경
+     * 예시 : 사용자가 제목을 입력하면 -> boards.title 에 저장됨
+     * 
+     * @boardUploadFromData 백엔드로 데이터를 전송하기 위한 특수 객체
+     * 타입 : 파일 업로드를 위한 HTML5 API
+     * 언제 사용하는가 : axios.post() 로 서버에 데이터를 전송할 때 사용
+     * 특징 : JSON + 파일 데이터를 함께 전송 가능 multipart/form-data
+     * 예시 : 제목, 내용(JSON) + 이미지 파일을 한 번에 전송
+     */
+    
     const [formData, setFormData] = useState({
         title: '',
         content: '',
@@ -70,25 +90,25 @@ const BoardWrite = () => {
 
         try {
             const boardUploadFromData = new FormData();
-            // 1. 이미지 url 을 나머지 데이터 JSON 으로 변환
-            const {imageUrl, ...boardDataWithouImage} = formData; // boardFormData
+            // 1. 이미지 url 을 제외한 나머지 데이터 JSON 으로 변환
+            const {imageUrl, ...boardDataWithoutImage} = boards; // boardFormData
             // 2. 게시물 작성자에 user로 로그인 했을 때 멤버 아이디 넣기
-            boardDataWithouImage.writer = user?.memberEmail;
+            boardDataWithoutImage.writer = user?.memberEmail;
 
             // 3. boardDataBlob 처리 해주기
             const boardDataBlob = new Blob(
-                [JSON.stringify(formData)],
+                [JSON.stringify(boardDataWithoutImage)],
                 {type:'application/json'}
             );
 
             // FormData 에 board 데이터 추가
-             boardUploadFromData.append('board',boardDataBlob);
+             boardUploadFromData.append('board', boardDataBlob);
 
              // 4. 이미지 파일이 있으면 formData 에 추가
             if(uploadedBoardImageFile) boardUploadFromData.append('imageFile', uploadedBoardImageFile);
             
             // 5. 백엔드 호출
-            boardSave(axios,{...formData, writer:user?.memberEmail}, navigate);
+            await boardSave(axios, boardUploadFromData, navigate); // 추가적인 로직이 잇을 수 있으니 async await 넣어주기
 
         } catch (err) {
 
@@ -96,11 +116,11 @@ const BoardWrite = () => {
     }
 
     const handleChange = (e) => {
-        handleInputChange(e, setFormData);
+        handleInputChange(e, setBoards);
     }
 
     // ok 를 할 경우 게시물 목록으로 돌려보내기
-    // 기능이 하나이기 때문에 if 다음 navigate 는 {} 생략 후 작성
+    // 기능이 하나이기 때문에 if 다음 navigate 는 {} 생략 후 작성ㅇ
     const handleCancel = () => {
         if (window.confirm("작성을 취소하시겠습니까?")) navigate('/board');
     }
@@ -120,10 +140,34 @@ const BoardWrite = () => {
                             {/*<input type="text" id="writer" name="writer" value={formData.writer} onChange={handleChange} placeholder="작성자를 입력하세요." maxLength={50} required/>*/}
                         </label>
                         <div className="writer-display">
+                            {/*writer-email*/}
                             <span className="user-email">{user?.memberName}</span>
                         </div>
                     </div>
 
+                    <label>제목 :
+                        {/* "" 는 String 값, {}는 다 쓸 수 있음.. */}
+                        <input type="text"
+                               id="title"
+                               name="title"
+                               value={boards.title}
+                               onChange={handleChange}
+                               placeholder="제목을 입력하세요."
+                               maxLength={200}
+                               required
+                        />
+                    </label>
+
+                    <label>내용 :
+                        <textarea id="content"
+                                  name="content"
+                                  value={boards.content}
+                                  onChange={handleChange}
+                                  placeholder="내용을 입력하세요."
+                                  rows={15}
+                                  required
+                        />
+                    </label>
 
                     <div className="form-group">
                         <label htmlFor="imageUrl" className="btn-upload">
@@ -134,7 +178,7 @@ const BoardWrite = () => {
                             id="imageUrl"
                             name="imageUrl"
                             ref={fileInputRef}
-                            onChange={handleChangeImage(setBoardImagePreview, setUploadedBoardImageFile, setFormData)}
+                            onChange={handleChangeImage(setBoardImagePreview, setUploadedBoardImageFile, setBoards)}
                             accept="image/*"
                             style={{display: 'none'}}
                         />
@@ -160,13 +204,6 @@ const BoardWrite = () => {
                         )}
                     </div>
 
-                    <label>제목 :
-                        {/* "" 는 String 값, {}는 다 쓸 수 있음.. */}
-                        <input type="text" id="title" name="title" value={formData.title} onChange={handleChange} placeholder="제목을 입력하세요." maxLength={200} required/>
-                    </label>
-                    <label>내용 :
-                        <textarea id="content" name="content" value={formData.content} onChange={handleChange} placeholder="내용을 입력하세요." rows={15} required/>
-                    </label>
                     <div className="form-buttons">
                         <button type="submit" className="btn-submit">작성하기</button>
                         <button type="button" className="btn-cancel" onClick={handleCancel}>돌아가기</button>
