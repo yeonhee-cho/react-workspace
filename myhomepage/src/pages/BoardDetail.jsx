@@ -24,6 +24,11 @@ const BoardDetail = () => {
         goToPage(navigate,"/board");
     }
 
+    let 상세이미지들 = [];
+    if(board.boardDetailImage) {
+        상세이미지들 = board.boardDetailImage.split(',');
+    }
+
     return (
         <div className="page-container">
             <div className="board-detail-info">
@@ -32,17 +37,25 @@ const BoardDetail = () => {
                 <span>작성일 : {board.createdAt}</span>
             </div>
 
-
-            {board.boardImage ?
-            <div className="product-detail-image">
-                <img src={board.boardImage} alt={board.title}/>
-            </div>
-            :
-            ""}
+            {board.boardMainImage ?
+                <div className="product-detail-image" style={{marginBottom:"20px"}}>
+                    <img src={board.boardMainImage} alt={board.title}/>
+                </div>
+                :
+                ""}
 
             <div className="board-detail-content">
                 {board.content}
             </div>
+
+            <div className="detail-image-list" style={{display:"flex",flexWrap: "wrap", gap:"4px"}}>
+                {상세이미지들.map((이미지경로, 순번) => (
+                    <div key={순번} style={{width:"calc((924px - (4px * 5))/5)", height:"200px", overflow:"hidden"}}>
+                        <img src={이미지경로} alt="이미지상세" style={{width:"100%", height:"100%", objectFit:"cover"}}/>
+                    </div>
+                ))}
+            </div>
+
             <button className="button" onClick={() => goToPage(navigate, '/board')}>
                 목록으로
             </button>

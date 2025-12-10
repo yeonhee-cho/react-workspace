@@ -107,7 +107,7 @@ const BoardWrite = () => {
              boardUploadFromData.append('board', boardDataBlob);
 
              // 4. 이미지 파일이 있으면 formData 에 추가
-            if(uploadedMainBoardImageFiles) boardUploadFromData.append('mainImage', uploadedMainBoardImageFiles);
+            if(uploadedMainBoardImageFiles) boardUploadFromData.append('mainImageFile', uploadedMainBoardImageFiles);
             
             // 상세 이미지들 추가
             if(상세사진이름들 && 상세사진이름들.length > 0) {
@@ -282,7 +282,7 @@ const BoardWrite = () => {
                                     선택된 이미지 : {상세사진들미리보기.length} 개
                                 </p>
 
-                                <div className="detail-image-list" style={{display:"flex"}}>
+                                <div className="detail-image-list" style={{display:"flex",gap:"4px"}}>
                                     {상세사진들미리보기.map((image, index) => (
                                             <div key={index} className="detail-image-item">
                                                 <img src={image}
